@@ -2,7 +2,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Venty 2020<br/>Developed with <i class="fas fa-heart"></i> by <i>ChooChye</i> & <i>Mei Lin</i></span>
+            <span>Copyright &copy; <?php echo $APP_NAME;?> 2020<br/>Developed with <i class="fas fa-heart"></i> by <i>ChooChye</i> & <i>Mei Lin</i></span>
         </div>
     </div>
 </footer>

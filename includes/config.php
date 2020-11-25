@@ -1,3 +1,4 @@
 <?php
-$APP_NAME   = "Venty";
+$APP_NAME   = "LamLam";
 $url        = "localhost/www/test/";
+
