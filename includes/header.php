@@ -1,3 +1,8 @@
+<?php
+    include_once ('includes/config.php');
+    include_once('includes/Helper.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +14,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Venty - Dashboard</title>
+  <title><?php echo $APP_NAME;?> - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
