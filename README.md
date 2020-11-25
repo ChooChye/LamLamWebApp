@@ -1,4 +1,4 @@
-# Venty Web Application
+# LamLam Web Application
 
 16th October 2020
 
