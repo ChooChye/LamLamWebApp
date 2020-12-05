@@ -43,3 +43,11 @@ class Lcg
         return $str;
     }*/
 }
+
+function alertSuccess($msg){
+    return '<div class="alert alert-success text-center" role="alert">'.$msg.'</div>';
+}
+
+function alertError($msg){
+    return '<div class="alert alert-danger text-center" role="alert">'.$msg.'</div>';
+}

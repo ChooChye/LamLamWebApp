@@ -1,5 +1,5 @@
 <?php
-include('includes/header.php');
+include('includes/Header.php');
 ?>
 
 <!-- Page Wrapper -->
