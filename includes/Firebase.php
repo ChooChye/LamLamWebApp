@@ -23,8 +23,9 @@ class FBconnect{
 
     //$ref = reference to DB | $data = array of data
     public function insertData($ref, $data){
-        $this->database->getReference($ref)->push($data);
+        $this->database->getReference($ref)->getChild($data['type'])->push();
     }
+
 
     public function deleteData($ref, $key){
         try{
@@ -41,6 +42,14 @@ class FBconnect{
         foreach($postData as $key => $row){
             echo $key.'<br/>';
         }
+    }
+
+    public function checkNode($ref, $child){
+        return $this->database->getReference("$ref")->getSnapshot()->getChild($child)->exists();
+    }
+
+    public function check2Node($ref, $child, $child2){
+        return $this->database->getReference("$ref")->getSnapshot()->getChild($child)->getChild($child2)->exists();
     }
 }
 

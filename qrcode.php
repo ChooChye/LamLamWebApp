@@ -7,31 +7,58 @@ $header = new Header('', 'Generate QR Code');
 $header->initHeader();
 
 
-
 //process
 $fb = new FBconnect('includes/');
-if(isset($_POST['newCategoryBtn'])){
-    try{
-        $data = [
-                "type" => $_POST['newCategory']
-        ];
-        $fb->insertData('Category', $data);
 
-        echo alertSuccess('<b>'.$_POST['newCategory'].'</b> has been added successfully</div>');
-    }catch (Exception $e){
+/*$newCategory = "Tops";
+$newProd = "Blue Sweatshirt";
+$data = [
+    "product_name" => "Blue Sweatshirt",
+    "desc" => 'Testing Desc'
+];
+$result = $fb->database->getReference("Categories")->getSnapshot()->getChild("T-Shirt")->getValue();
+foreach($result as $key => $row ){
+    echo $key;
+    if($row == "null" || $row == ""){
+        $fb->database->getReference("Categories")->getChild("T-Shirt")->getChild($key)->update($data);
+    }else{
+        echo "not empty";
+    }
+}*/
+
+
+$ref = "Categories";
+
+//Add new product
+if (isset($_POST['newCategoryBtn'])) {
+
+    $newCategory = $_POST['newCategory'];
+    try {
+
+        if ($fb->checkNode($ref, $newCategory)) {
+            echo alertInfo('<b>' . $_POST['newCategory'] . '</b> is already in the list</div>');
+        } else {
+            $fb->database->getReference($ref)->getChild($newCategory)->push("null");
+        }
+        echo alertSuccess('<b>' . $_POST['newCategory'] . '</b> has been added successfully</div>');
+    } catch (Exception $e) {
         echo alertError($e);
     }
 }
 
-if(isset($_POST['newProductBtn'])){
-    try{
-        $data = [
-                "type" => $_POST['newProduct']
-        ];
-        $fb->insertData('Products', $data);
+//Add new product
+if (isset($_POST['newProductBtn'])) {
+    $child = $_POST['category'];
 
-        echo alertSuccess('<b>'.$_POST['newProduct'].'</b> has been added successfully</div>');
-    }catch (Exception $e){
+    try {
+        $data = [
+            "product_name" => $_POST['newProduct'],
+            "desc" => $_POST['prodDesc'],
+            "qty" => $_POST['qty'],
+            "price" => $_POST['price']
+        ];
+        checkDataExist($fb, $ref, $child, $data);
+    } catch (Exception $e) {
         echo alertError($e);
     }
 }
@@ -42,27 +69,59 @@ if(isset($_POST['newProductBtn'])){
 /* The JSON string created from the array. */
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (isset($_POST['genBtn']) && isset($_POST['lProd']) && isset($_POST['lCat'])) {
+    //Init QR library
     require_once('phpqrcode/qrlib.php');
     $path = 'img/qrcodes/';
     $file = $path . uniqid() . '.png';
 
+    //POST DATA
+    $cat = $_POST['lCat'];
+    $prod = $_POST['lProd'];
 
-    if(isset($_POST['genBtn']) && isset($_POST['lProd']) && isset($_POST['lCat'])){
-        $cat = $_POST['lCat'];
-        $prod = $_POST['lProd'];
-        $array = array(
-                "id" => uniqid(),
-                "Category" => $cat,
-                "Product" => $prod,
-        );
-        $json = json_encode($array);
-        QRcode::png($json, $file, 'H', 7);
-    }
 
+    //Init Firebase Data
+    $fb->database->getReference('Categories')->getChild($cat);
+
+
+    $array = array(
+        "id" => uniqid(),
+        "Category" => $cat,
+        "Product" => $prod,
+    );
+    $json = json_encode($array);
+    QRcode::png($json, $file, 'H', 7);
 }
 
 
+function getCatList($fb)
+{
+    $listArray = array();
+    $i = 0;
+    $cat = $fb->database->getReference('Categories')->getValue();
+    foreach ($cat as $collection => $colRows) {
+        $listArray[$i] = $collection;
+        $i++;
+    }
+    sort($listArray);
+    for ($j = 0; $j < count($listArray); $j++) {
+        echo '<option>' . $listArray[$j] . '</option>';
+    }
+}
+
+function checkDataExist($fb, $ref, $child, $data)
+{
+    $result = $fb->database->getReference($ref)->getSnapshot()->getChild($child)->getValue();
+
+    foreach ($result as $key => $row) {
+        //echo $key;
+        if ($row == "null" || $row == "") {
+            $fb->database->getReference($ref)->getChild($child)->getChild($key)->update($data);
+        } else {
+            $fb->database->getReference($ref)->getChild($child)->push($data);
+        }
+    }
+}
 
 ?>
 
@@ -85,38 +144,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
 
                 <!-- Content Row -->
-                
+
                 <div class="row">
                     <div class="col-xl-6 col-lg-5">
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <form actio="" method="post">
+                                <form action="" method="post">
                                     <div class="form-group mb-4">
-                                        <label><b>Product Category</b> <a href="#" data-toggle="modal" data-target="#newCategory" style="font-size: 12px">(Add new category)</a></label>
-                                        <select class="form-control" name="lCat">
-                                            <option selected>Select a Category</option>
+                                        <label><b>Product Category</b> <a href="#" data-toggle="modal"
+                                                                          data-target="#newCategory"
+                                                                          style="font-size: 12px">(Add new category)</a></label>
+                                        <select class="form-control" name="lCat" id="lCat">
+                                            <option selected disabled>Select a Category</option>
                                             <?php
-                                            $postData = $fb->database->getReference('Category')->getValue();
-                                            foreach($postData as $key => $rows){
-                                                echo '<option>'.$rows['type'].'</option>';
-                                            }
+                                            getCatList($fb);
                                             ?>
                                         </select>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label><b>Product Name</b> <a href="#" data-toggle="modal" data-target="#newProduct" style="font-size: 12px">(Add new item)</a></label>
-                                        <select class="form-control" name="lProd">
-                                            <option selected>Select a Product</option>
-                                            <?php
-                                            $newProduct = $fb->database->getReference('Products')->getValue();
-                                            foreach($newProduct as $key => $rows){
-                                                echo '<option>'.$rows['type'].'</option>';
-                                            }
-                                            ?>
+                                        <label><b>Product Name</b> <a href="#" data-toggle="modal"
+                                                                      data-target="#newProduct" style="font-size: 12px">(Add
+                                                new item)</a></label>
+                                        <select class="form-control" name="lProd" id="lProd">
+                                            <option selected disabled>Select a Product</option>
                                         </select>
                                     </div>
                                     <div class="form-group mb-4">
-                                        <input type="submit" name="genBtn" class="btn btn-success btn-block" value="Generate QR Code">
+                                        <input type="submit" name="genBtn" id="genBtn" class="btn btn-success btn-block"
+                                               disabled value="Generate QR Code">
                                     </div>
                                 </form>
                             </div>
@@ -125,9 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="col-xl-6 col-lg-5">
                         <div class="card shadow mb-4">
                             <div class="card-body">
-
                                 <?php
-
                                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     echo '    <center>
                                                 <img src="' . $file . '"/><br/>
@@ -153,8 +206,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         include('includes/footer.php');
         ?>
 
+
+        <script>
+            /*Main Document*/
+            $(document).ready(function () {
+
+                controlGenBtn(true);
+
+            });
+
+            /*Methods*/
+            function controlGenBtn(bool) {
+                $('#genBtn').prop("disabled", bool);
+            }
+
+
+            /*onChange methods*/
+            $('#lCat').on('change', function () {
+                var ref = $("#lCat option:selected").text();
+                var childKey = null;
+                $('#lProd').find('option').remove().end().append("<option selected disabled>Select Product</option>");
+                controlGenBtn(true);
+                var database = firebase.database();
+
+                database.ref('Categories/' + ref).once("value", function (snapshot) {
+
+                    snapshot.forEach(function (childSnapshot) {
+                        childKey = childSnapshot.key;
+                        const cat = childSnapshot.val();
+
+                        //Check if child is null
+                        if (cat !== "null") {
+                            $("#lProd").append('<option value="' + childKey + '">' + cat.product_name + '</option>');
+                        }
+                    });
+                })
+            });
+
+            $('#lProd').on('change', function () {
+                var selectedCat = $('#lCat option:selected');
+                var selectedProd = $('#lProd option:selected');
+                //console.log(selectedCat.text() + " | " + selectedProd.text() );
+                if (selectedCat.text() === "Select Category") {
+                    if (selectedProd.text() === "Select Product") {
+                        controlGenBtn(true);
+                    }
+                } else {
+                    if (selectedProd.text() !== "Select Product") {
+                        controlGenBtn(false);
+                    }
+                }
+            })
+        </script>
+
         <!-- Add new Category Modal -->
-        <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle" aria-hidden="true">
+        <div class="modal fade" id="newCategory" tabindex="-1" role="dialog" aria-labelledby="newCategoryTitle"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -178,7 +285,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <!-- Add new Product Modal -->
-        <div class="modal fade" id="newProduct" tabindex="-1" role="dialog" aria-labelledby="newProductTitle" aria-hidden="true">
+        <div class="modal fade" id="newProduct" tabindex="-1" role="dialog" aria-labelledby="newProductTitle"
+             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -190,7 +298,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="modal-body">
                         <form action="" method="post">
                             <div class="form-group mb-3">
-                                <input type="text" name="newProduct" class="form-control" placeholder="Product Name"/>
+                                <div class="form-row">
+                                    <select name="category" class="form-control">
+                                        <option selected disabled>Select a Category</option>
+                                        <?php
+                                        getCatList($fb);
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="form-row">
+                                    <input type="text" name="newProduct" id="newProduct" class="form-control"
+                                           placeholder="Product Name"/>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="form-row">
+                                    <input type="text" name="prodDesc" id="prodDesc" class="form-control"
+                                           placeholder="Product Description"/>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="form-row">
+                                    <input type="number" name="qty" id="qty" class="form-control"
+                                           placeholder="Stock Quantity"/>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="form-row">
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">RM</div>
+                                        </div>
+                                        <input type="number" name="price" id="price" class="form-control"
+                                               placeholder="Price"/>
+                                    </div>
+
+                                </div>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -201,6 +346,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
     <!-- End of Main Content -->
 
 

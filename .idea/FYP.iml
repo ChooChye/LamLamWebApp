@@ -19,6 +19,9 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/google/cloud-core" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/google/cloud-storage" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/google/crc32" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/promises" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/psr7" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/clock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/firebase-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kreait/firebase-tokens" />
