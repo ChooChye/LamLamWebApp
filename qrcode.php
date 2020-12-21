@@ -10,23 +10,6 @@ $header->initHeader();
 //process
 $fb = new FBconnect('includes/');
 
-/*$newCategory = "Tops";
-$newProd = "Blue Sweatshirt";
-$data = [
-    "product_name" => "Blue Sweatshirt",
-    "desc" => 'Testing Desc'
-];
-$result = $fb->database->getReference("Categories")->getSnapshot()->getChild("T-Shirt")->getValue();
-foreach($result as $key => $row ){
-    echo $key;
-    if($row == "null" || $row == ""){
-        $fb->database->getReference("Categories")->getChild("T-Shirt")->getChild($key)->update($data);
-    }else{
-        echo "not empty";
-    }
-}*/
-
-
 $ref = "Categories";
 
 //Add new product
@@ -52,23 +35,22 @@ if (isset($_POST['newProductBtn'])) {
 
     try {
         $data = [
+            "category" => $child,
             "product_name" => $_POST['newProduct'],
             "desc" => $_POST['prodDesc'],
             "qty" => $_POST['qty'],
             "price" => $_POST['price']
         ];
-        checkDataExist($fb, $ref, $child, $data);
+
+        $fb->database->getReference("Products")->push($data);
     } catch (Exception $e) {
         echo alertError($e);
     }
 }
 
-//Generate QR
-
 
 /* The JSON string created from the array. */
-
-
+//Generate QR Code
 if (isset($_POST['genBtn']) && isset($_POST['lProd']) && isset($_POST['lCat'])) {
     //Init QR library
     require_once('phpqrcode/qrlib.php');
@@ -81,15 +63,16 @@ if (isset($_POST['genBtn']) && isset($_POST['lProd']) && isset($_POST['lCat'])) 
 
 
     //Init Firebase Data
-    $fb->database->getReference('Categories')->getChild($cat);
+    $result = $fb->database->getReference('Products')->getChild($prod)->getValue();
 
+    $resultInArr = Array($result);
 
-    $array = array(
-        "id" => uniqid(),
-        "Category" => $cat,
-        "Product" => $prod,
-    );
-    $json = json_encode($array);
+    //add ID into array
+    foreach($resultInArr as $resultsInArr){
+        $resultsInArr["id"] = $prod;
+    }
+
+    $json = json_encode($resultsInArr);
     QRcode::png($json, $file, 'H', 7);
 }
 
@@ -106,20 +89,6 @@ function getCatList($fb)
     sort($listArray);
     for ($j = 0; $j < count($listArray); $j++) {
         echo '<option>' . $listArray[$j] . '</option>';
-    }
-}
-
-function checkDataExist($fb, $ref, $child, $data)
-{
-    $result = $fb->database->getReference($ref)->getSnapshot()->getChild($child)->getValue();
-
-    foreach ($result as $key => $row) {
-        //echo $key;
-        if ($row == "null" || $row == "") {
-            $fb->database->getReference($ref)->getChild($child)->getChild($key)->update($data);
-        } else {
-            $fb->database->getReference($ref)->getChild($child)->push($data);
-        }
     }
 }
 
@@ -227,9 +196,9 @@ function checkDataExist($fb, $ref, $child, $data)
                 var childKey = null;
                 $('#lProd').find('option').remove().end().append("<option selected disabled>Select Product</option>");
                 controlGenBtn(true);
-                var database = firebase.database();
+                var database = firebase.database().ref("Products");
 
-                database.ref('Categories/' + ref).once("value", function (snapshot) {
+                database.once("value", function (snapshot) {
 
                     snapshot.forEach(function (childSnapshot) {
                         childKey = childSnapshot.key;
@@ -237,7 +206,9 @@ function checkDataExist($fb, $ref, $child, $data)
 
                         //Check if child is null
                         if (cat !== "null") {
-                            $("#lProd").append('<option value="' + childKey + '">' + cat.product_name + '</option>');
+                            if(cat.category === ref){
+                                $("#lProd").append('<option value="' + childKey + '">' + cat.product_name + '</option>');
+                            }
                         }
                     });
                 })
