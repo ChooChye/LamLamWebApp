@@ -1,5 +1,8 @@
 <?php
 include('includes/Header.php');
+include('includes/Helper.php');
+$header = new Header('', 'LamLam Dashboard');
+$header->initHeader();
 ?>
 
 <!-- Page Wrapper -->
