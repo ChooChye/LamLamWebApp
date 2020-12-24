@@ -2,25 +2,10 @@
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
-use Google\Cloud\Storage\StorageClient;
+
 // This assumes that you have placed the Firebase credentials in the same directory
 // as this PHP file.
-class FBStorage{
-    public function __construct($root)
-    {
-        $this->storage = null;
-        $this->root = $root;
 
-        $serviceAccount = ServiceAccount::fromJsonFile($this->root.'lamlam-3818d-fca3788732aa.json');
-
-        $storage = (new Factory)->withServiceAccount($serviceAccount)
-            ->withDefaultStorageBucket("lamlam-3818d.appspot.com/")
-            ->create();
-
-        $this->storage = $storage->getStorage();
-
-    }
-}
 
 class FBconnect{
     public function __construct($root)

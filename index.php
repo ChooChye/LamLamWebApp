@@ -35,7 +35,6 @@ $header->initHeader();
                     $r = null;
 
                     $r = $p * ()/()
-
                 </div>
                 <div class="row">
                     <!-- Earnings (Monthly) Card Example -->

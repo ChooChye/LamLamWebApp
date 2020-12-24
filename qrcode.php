@@ -7,12 +7,13 @@ $header = new Header('', 'Generate QR Code');
 $header->initHeader();
 
 
+
 //process
 $fb = new FBconnect('includes/');
 
 $ref = "Categories";
 
-//Add new product
+//Add new category
 if (isset($_POST['newCategoryBtn'])) {
 
     $newCategory = $_POST['newCategory'];
@@ -32,13 +33,13 @@ if (isset($_POST['newCategoryBtn'])) {
 //Add new product
 if (isset($_POST['newProductBtn'])) {
     $child = $_POST['category'];
-
     try {
         $data = [
             "category" => $child,
             "product_name" => $_POST['newProduct'],
             "desc" => $_POST['prodDesc'],
             "qty" => $_POST['qty'],
+            "image" => $_FILES['image']['name'],
             "price" => $_POST['price']
         ];
 
@@ -118,7 +119,7 @@ function getCatList($fb)
                     <div class="col-xl-6 col-lg-5">
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <form action="" method="post">
+                                <form action="" method="post" enctype="multipart/form-data">
                                     <div class="form-group mb-4">
                                         <label><b>Product Category</b> <a href="#" data-toggle="modal"
                                                                           data-target="#newCategory"
@@ -228,6 +229,21 @@ function getCatList($fb)
                     }
                 }
             })
+
+            function uploadImage(){
+                const ref = firebase.storage().ref().child("products")
+                const file = document.querySelector("#image").files[0]
+                const name = file.name
+                const metadata = {
+                    contentType:file.type
+                }
+                const task = ref.child(name).put(file, metadata)
+                task
+                .then(snapshot => snapshot.ref.getDownloadURL())
+                .then(url =>{
+                    //console.log(url)
+                })
+            }
         </script>
 
         <!-- Add new Category Modal -->
@@ -244,7 +260,7 @@ function getCatList($fb)
                     <div class="modal-body">
                         <form action="" method="post">
                             <div class="form-group mb-3">
-                                <input type="text" name="newCategory" class="form-control" placeholder="Category Name"/>
+                                <input type="text" name="newCategory" class="form-control" placeholder="Category Name" required/>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -267,10 +283,10 @@ function getCatList($fb)
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                             <div class="form-group mb-3">
                                 <div class="form-row">
-                                    <select name="category" class="form-control">
+                                    <select name="category" class="form-control" required>
                                         <option selected disabled>Select a Category</option>
                                         <?php
                                         getCatList($fb);
@@ -281,19 +297,19 @@ function getCatList($fb)
                             <div class="form-group mb-3">
                                 <div class="form-row">
                                     <input type="text" name="newProduct" id="newProduct" class="form-control"
-                                           placeholder="Product Name"/>
+                                           placeholder="Product Name" required/>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
                                 <div class="form-row">
                                     <input type="text" name="prodDesc" id="prodDesc" class="form-control"
-                                           placeholder="Product Description"/>
+                                           placeholder="Product Description" required/>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
                                 <div class="form-row">
                                     <input type="number" name="qty" id="qty" class="form-control"
-                                           placeholder="Stock Quantity"/>
+                                           placeholder="Stock Quantity" required/>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
@@ -302,15 +318,19 @@ function getCatList($fb)
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">RM</div>
                                         </div>
-                                        <input type="number" name="price" id="price" class="form-control"
-                                               placeholder="Price"/>
+                                        <input type="text" name="price" id="price" class="form-control"
+                                               placeholder="Price" required/>
                                     </div>
-
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="form-row">
+                                    <input type="file" name="image" id="image" class="form-control" required/>
                                 </div>
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" name="newProductBtn" class="btn btn-primary" value="Add"/>
+                        <input type="submit" name="newProductBtn" class="btn btn-primary" onclick="uploadImage()" value="Add"/>
                     </div>
                     </form>
                 </div>
