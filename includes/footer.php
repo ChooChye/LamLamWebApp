@@ -2,7 +2,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <?php echo $APP_NAME;?> 2020<br/>Developed with <i class="fas fa-heart"></i> by <i>ChooChye</i> & <i>Mei Lin</i></span>
+            <span>Copyright &copy; <?php echo $header->app_name;?> 2020<br/>Developed with <i class="fas fa-heart"></i> by <i>ChooChye</i> & <i>Mei Lin</i></span>
         </div>
     </div>
 </footer>
@@ -48,12 +48,35 @@
 <!-- Custom scripts for all pages-->
 <script src="core/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="vendor/chart.js/Chart.min.js"></script>
 
-<!-- Page level custom scripts -->
-<script src="core/js/demo/chart-area-demo.js"></script>
-<script src="core/js/demo/chart-pie-demo.js"></script>
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-analytics.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-storage.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyA7PRvg5Dao3eGYoyAdPZmrRBz-FwI3Iow",
+        authDomain: "lamlam-3818d.firebaseapp.com",
+        databaseURL: "https://lamlam-3818d.firebaseio.com",
+        projectId: "lamlam-3818d",
+        storageBucket: "lamlam-3818d.appspot.com",
+        messagingSenderId: "145452212040",
+        appId: "1:145452212040:web:6cdaf7ce60bb27bedc1d7d",
+        measurementId: "G-0BQNKGZ04Q"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+</script>
 
 </body>
 

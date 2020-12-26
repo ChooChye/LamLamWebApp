@@ -1,5 +1,8 @@
 <?php
-include('includes/header.php');
+include('includes/Header.php');
+include('includes/Helper.php');
+$header = new Header('', 'LamLam Dashboard');
+$header->initHeader();
 ?>
 
 <!-- Page Wrapper -->
@@ -32,7 +35,6 @@ include('includes/header.php');
                     $r = null;
 
                     $r = $p * ()/()
-
                 </div>
                 <div class="row">
                     <!-- Earnings (Monthly) Card Example -->

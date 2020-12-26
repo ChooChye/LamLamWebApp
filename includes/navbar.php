@@ -11,7 +11,7 @@
             </a>
         </li>
         <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link" href="#" role="button" aria-expanded="false">
+            <a class="nav-link" href="http://localhost/www/FYP/WebApp/qrcode.php" role="button" aria-expanded="false">
                 Generate QR Code
             </a>
         </li>
