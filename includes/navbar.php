@@ -6,8 +6,13 @@
 
         <!-- Nav Items -->
         <li class="nav-item dropdown no-arrow mx-1">
-            <a class="nav-link" href="#" role="button" aria-expanded="false">
-                Manage Categories
+            <a class="nav-link" href="http://localhost/www/FYP/WebApp/manage_stock_admin.php" role="button" aria-expanded="false">
+                Manage Stocks
+            </a>
+        </li>
+        <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link" href="http://localhost/www/FYP/WebApp/generate_report.php" role="button" aria-expanded="false">
+                Generate Report
             </a>
         </li>
         <li class="nav-item dropdown no-arrow mx-1">
