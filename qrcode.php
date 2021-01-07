@@ -7,7 +7,6 @@ $header = new Header('', 'Generate QR Code');
 $header->initHeader();
 
 
-
 //process
 $fb = new FBconnect('includes/');
 
@@ -18,7 +17,6 @@ if (isset($_POST['newCategoryBtn'])) {
 
     $newCategory = $_POST['newCategory'];
     try {
-
         if ($fb->checkNode($ref, $newCategory)) {
             echo alertInfo('<b>' . $_POST['newCategory'] . '</b> is already in the list</div>');
         } else {
@@ -66,10 +64,10 @@ if (isset($_POST['genBtn']) && isset($_POST['lProd']) && isset($_POST['lCat'])) 
     //Init Firebase Data
     $result = $fb->database->getReference('Products')->getChild($prod)->getValue();
 
-    $resultInArr = Array($result);
+    $resultInArr = array($result);
 
     //add ID into array
-    foreach($resultInArr as $resultsInArr){
+    foreach ($resultInArr as $resultsInArr) {
         $resultsInArr["id"] = $prod;
     }
 
@@ -121,9 +119,10 @@ function getCatList($fb)
                             <div class="card-body">
                                 <form action="" method="post" enctype="multipart/form-data">
                                     <div class="form-group mb-4">
-                                        <label><b>Product Category</b> <a href="#" data-toggle="modal"
-                                                                          data-target="#newCategory"
-                                                                          style="font-size: 12px">(Add new category)</a></label>
+                                        <label><b>Product Category</b>
+                                            <a href="#" data-toggle="modal"
+                                               data-target="#newCategory"
+                                               style="font-size: 12px">(Add new category)</a></label>
                                         <select class="form-control" name="lCat" id="lCat">
                                             <option selected disabled>Select a Category</option>
                                             <?php
@@ -200,14 +199,13 @@ function getCatList($fb)
                 var database = firebase.database().ref("Products");
 
                 database.once("value", function (snapshot) {
-
                     snapshot.forEach(function (childSnapshot) {
                         childKey = childSnapshot.key;
                         const cat = childSnapshot.val();
 
                         //Check if child is null
                         if (cat !== "null") {
-                            if(cat.category === ref){
+                            if (cat.category === ref) {
                                 $("#lProd").append('<option value="' + childKey + '">' + cat.product_name + '</option>');
                             }
                         }
@@ -230,19 +228,19 @@ function getCatList($fb)
                 }
             })
 
-            function uploadImage(){
+            function uploadImage() {
                 const ref = firebase.storage().ref().child("products")
                 const file = document.querySelector("#image").files[0]
                 const name = file.name
                 const metadata = {
-                    contentType:file.type
+                    contentType: file.type
                 }
                 const task = ref.child(name).put(file, metadata)
                 task
-                .then(snapshot => snapshot.ref.getDownloadURL())
-                .then(url =>{
-                    //console.log(url)
-                })
+                    .then(snapshot => snapshot.ref.getDownloadURL())
+                    .then(url => {
+                        //console.log(url)
+                    })
             }
         </script>
 
@@ -260,7 +258,8 @@ function getCatList($fb)
                     <div class="modal-body">
                         <form action="" method="post">
                             <div class="form-group mb-3">
-                                <input type="text" name="newCategory" class="form-control" placeholder="Category Name" required/>
+                                <input type="text" name="newCategory" class="form-control" placeholder="Category Name"
+                                       required/>
                             </div>
                     </div>
                     <div class="modal-footer">
@@ -330,7 +329,8 @@ function getCatList($fb)
                             </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" name="newProductBtn" class="btn btn-primary" onclick="uploadImage()" value="Add"/>
+                        <input type="submit" name="newProductBtn" class="btn btn-primary" onclick="uploadImage()"
+                               value="Add"/>
                     </div>
                     </form>
                 </div>
