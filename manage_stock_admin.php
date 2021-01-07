@@ -29,13 +29,13 @@ $header->initHeader();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="navbar" href="#">
-                            <button id="btnAdd" onclick="location.href='insertNewData.php'">
+
+                            <button id="btnAdd" onclick="location.href='insertNewData.php'" class="btn">
                                 <img src="add.svg" alt="" width="30" height="20" class="d-inline-block align-top">
                                 Add
                             </button>
 
-                        </a>
+
 
                         <!--ADD / CREATE FUNCTION-->
  <!--                       <script>
@@ -54,13 +54,13 @@ $header->initHeader();
                     </li>
 
                     <li>
-                        <div class="row justify-content-end">
+                      <!--  <div class="row justify-content-end">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <input type="text" id="search-name" class="form-control" placeholder="Search">
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </li>
 
                 </ul>
@@ -181,12 +181,16 @@ $header->initHeader();
 
     <!--PRINT DATA IN PRODUCTS DATABASE-->
     <?php
-      //  include('includes/Firebase.php');
-         $firebase = new FBconnect('includes/');
-        $prodRef="Products/";
-        $fetchdata=$firebase->database->getReference($prodRef)->getValue();
 
-        foreach ($fetchdata as $key=>$row){
+    $firebase = new FBconnect('includes/');
+    $prodRef="Products/";
+    $returnRef="Return History/";
+  //  $token = $_GET['token'];
+    $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+
+
+    foreach ($fetchdata as $key=>$row){
+
 
     ?>
     <tr id="currentData" class="visible">
@@ -200,23 +204,29 @@ $header->initHeader();
         <td><label id="currentDesc"><?php echo $row['desc']; ?></td>
         <td><label id="currentPrice"><?php echo $row['price']; ?></td>
         <td><label id="currentQty"><?php echo $row['qty']; ?></td>
-        <td><label id="currentStatus"></td>
+        <td><label id="currentStatus"><?php echo "In Stocks" ?></td>
         <td><label id="currentStaffID"></td>
         <td><label id="currentLoanID"></td>
         <td><label id="currentLoanDate"></td>
         <td><label id="currentReturnDate"></td>
         <td>
-            <button type="button" class="close" name="btnDelete" >
-                <img src="delete.svg" width="20" height="20">
-            </button>
+            <form action="editData.php" method="post">
+                <div class="form-group">
+                    <button type="button" class="close" name="btnDelete" >
+                        <img src="delete.svg" width="20" height="20">
 
-            <button type="button" class="close" name="btnEdit">
-                <img src="edit.svg" width="20" height="20">
-            </button>
+                    </button>
+
+                    <button type="button" class="close" name="btnEdit">
+                        <img src="edit.svg" width="20" height="20">
+                    </button>
+                </div>
+            </form>
         </td>
     </tr>
     <?php
-        }
+
+    }
     ?>
    <!-- <tr id="newRow" class="invisible">
         <td>
@@ -325,7 +335,7 @@ include('includes/footer.php');
     }
 
 
-    //------INSERT------
+/*    //------INSERT------
     document.getElementById('btnAdd').onclick=function () {
         Ready();
         newRole.visible {
@@ -415,7 +425,7 @@ include('includes/footer.php');
     document.getElementById('btnDelete').onclick=function () {
         Ready();
         firebase.database().ref('sample'+name).remove();
-    }
+    }*/
 
 
 </script>

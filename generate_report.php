@@ -3,6 +3,26 @@ include('includes/Header.php');
 include('includes/Helper.php');
 $header = new Header('', 'Generate Report');
 $header->initHeader();
+
+
+$fb = new FBconnect('includes/');
+$ref = "Categories";
+
+function getCatList($fb)
+{
+    $listArray = array();
+    $i = 0;
+    $cat = $fb->database->getReference('Categories')->getValue();
+    foreach ($cat as $collection => $colRows) {
+        $listArray[$i] = $collection;
+        $i++;
+    }
+    sort($listArray);
+    for ($j = 0; $j < count($listArray); $j++) {
+        echo '<option>' . $listArray[$j] . '</option>';
+    }
+}
+
 ?>
 <?php include('includes/navbar.php') ?>
 <div class="container">
@@ -50,7 +70,8 @@ $header->initHeader();
             <div class="col-4">
 
                 <label for="inputZip" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="inputZip" >
+                <input type="text" class="form-control" id="inputName" >
+
             </div>
             <div class="col">
 
@@ -58,9 +79,12 @@ $header->initHeader();
 
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
                 <datalist id="datalistOptions">
-                    <option value="Dresses">
+                   <!-- <option value="Dresses">
                     <option value="Jeans">
-                    <option value="Tops">
+                    <option value="Tops">-->
+                        <?php
+                        getCatList($fb);
+                        ?>
                 </datalist>
             </div>
 
@@ -68,12 +92,19 @@ $header->initHeader();
 
                 <label for="exampleDataList" class="form-label">Status</label>
 
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Status">
-                <datalist id="datalistOptions">
+               <!-- <input class="form-control" list="datalistOptions" >
+                <datalist>
                     <option value="In Stock">
                     <option value="Out of Stock">
                     <option value="Loan">
-                </datalist>
+                </datalist>-->
+
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>In Stock</option>
+                    <option value="">Out of Stock</option>
+                    <option value="">Loan</option>
+
+                </select>
             </div>
             <div class="col">
 
@@ -108,7 +139,7 @@ $header->initHeader();
         </tr>
         </thead>
         <tbody>
-        <tr>
+     <!--   <tr>
             <td>
                 <a class="nav-item" href="#">Levi's Jeans (Black)</a>
             </td>
@@ -129,17 +160,35 @@ $header->initHeader();
             <td>ST888</td>
             <td>1/12/2020</td>
             <td>30/12/2020</td>
-        </tr>
+        </tr>-->
+
+        <?php
+
+        $firebase = new FBconnect('includes/');
+        $prodRef="Products/";
+        //  $token = $_GET['token'];
+        $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+
+        foreach ($fetchdata as $key=>$row){
+        ?>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+                <?php
+                    echo $row['product_name'];
+
+                ?></td>
+            <td><?php echo $row['category']; ?></td>
+            <td><?php echo $row['qty']; ?></td>
+            <td><?php echo "In Stocks" ?></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
+            <?php
+
+        }
+        ?>
     </table>
 </div>
 
