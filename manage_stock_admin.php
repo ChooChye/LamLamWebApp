@@ -39,7 +39,7 @@ $header->initHeader();
                         </a>
 
                         <!--ADD / CREATE FUNCTION-->
-                        <script>
+ <!--                       <script>
                             firebase.database().ref('prod/' + userId).set({
                                 username: name,
                                 email: email,
@@ -51,7 +51,7 @@ $header->initHeader();
                                 addCommentElement(postElement, data.key, data.val().text, data.val().author);
                             });
                         </script>
-
+-->
                     </li>
 
                     <li>
@@ -174,7 +174,7 @@ $header->initHeader();
 
                 <!--DELETE FUNCTION-->
                 <script>
-                    firebase.database().ref().remove();
+          //          firebase.database().ref().remove();
                 </script>
             </button>
 
@@ -183,9 +183,9 @@ $header->initHeader();
 
                 <!--EDIT FUNCTION-->
                 <script>
-                    var updates = {};
-                    updates['/posts/' + newPostKey] = postData;
-                    updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+            //        var updates = {};
+             //       updates['/posts/' + newPostKey] = postData;
+             //       updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
                     //    return firebase.database().ref().update(updates);
 
@@ -207,7 +207,7 @@ $header->initHeader();
         <td><input id="pprice" type="text"></td>
         <td><input id="pqty" type="number"></td>
         <td><input id="pstatus" type="text"></td>
-        <td><input id="staffID" type="number"></td>
+        <td><input id="staffID" type="text"></td>
         <td><input id="loanID" type="text"></td>
         <td><input id="loanDate" type="date"></td>
         <td><input id="returnDate" type="date"></td>
@@ -268,6 +268,8 @@ include('includes/footer.php');
     }
 */
 ?>
+
+
 
 <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
