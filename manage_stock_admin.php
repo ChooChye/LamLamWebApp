@@ -4,7 +4,6 @@ include('includes/Helper.php');
 $header = new Header('', 'Manage Stock (Admin)');
 $header->initHeader();
 
-
 ?>
 
 <?php include('includes/navbar.php') ?>
@@ -31,7 +30,7 @@ $header->initHeader();
                     </li>
                     <li class="nav-item">
                         <a class="navbar" href="#">
-                            <button id="btnAdd">
+                            <button id="btnAdd" onclick="location.href='insertNewData.php'">
                                 <img src="add.svg" alt="" width="30" height="20" class="d-inline-block align-top">
                                 Add
                             </button>
@@ -100,7 +99,8 @@ $header->initHeader();
     </tr>
     </thead>
     <tbody>
-    <tr>
+
+ <!--   <tr>
         <td>
             <div>
                 <input type="checkbox" id="checkboxNoLabel" value="" >
@@ -171,31 +171,54 @@ $header->initHeader();
         <td>
             <button type="button" class="close" name="btnDelete">
                 <img src="delete.svg" width="20" height="20">
-
-                <!--DELETE FUNCTION-->
-                <script>
-          //          firebase.database().ref().remove();
-                </script>
             </button>
 
             <button type="button" class="close" name="btnEdit">
                 <img src="edit.svg" width="20" height="20">
+            </button>
+        </td>
+    </tr>-->
 
-                <!--EDIT FUNCTION-->
-                <script>
-            //        var updates = {};
-             //       updates['/posts/' + newPostKey] = postData;
-             //       updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+    <!--PRINT DATA IN PRODUCTS DATABASE-->
+    <?php
+      //  include('includes/Firebase.php');
+         $firebase = new FBconnect('includes/');
+        $prodRef="Products/";
+        $fetchdata=$firebase->database->getReference($prodRef)->getValue();
 
-                    //    return firebase.database().ref().update(updates);
+        foreach ($fetchdata as $key=>$row){
 
-                </script>
+    ?>
+    <tr id="currentData" class="visible">
+        <td>
+            <div>
+                <input type="checkbox" id="checkboxNoLabel" value="" >
+            </div>
+        </td>
+        <td><label id="currentName"><?php echo $row['product_name']; ?></td>
+        <td><label id="currentCategory"><?php echo $row['category']; ?></td>
+        <td><label id="currentDesc"><?php echo $row['desc']; ?></td>
+        <td><label id="currentPrice"><?php echo $row['price']; ?></td>
+        <td><label id="currentQty"><?php echo $row['qty']; ?></td>
+        <td><label id="currentStatus"></td>
+        <td><label id="currentStaffID"></td>
+        <td><label id="currentLoanID"></td>
+        <td><label id="currentLoanDate"></td>
+        <td><label id="currentReturnDate"></td>
+        <td>
+            <button type="button" class="close" name="btnDelete" >
+                <img src="delete.svg" width="20" height="20">
+            </button>
 
+            <button type="button" class="close" name="btnEdit">
+                <img src="edit.svg" width="20" height="20">
             </button>
         </td>
     </tr>
-
-    <tr>
+    <?php
+        }
+    ?>
+   <!-- <tr id="newRow" class="invisible">
         <td>
             <div>
                 <input type="checkbox" id="checkboxNoLabel" value="" >
@@ -220,13 +243,18 @@ $header->initHeader();
                 <img src="edit.svg" width="20" height="20">
             </button>
         </td>
-    </tr>
+    </tr>-->
     </tbody>
 </table>
 </div>
 
 <?php
 include('includes/footer.php');
+
+
+
+
+
 ?>
 
 
@@ -296,9 +324,14 @@ include('includes/footer.php');
 
     }
 
+
     //------INSERT------
     document.getElementById('btnAdd').onclick=function () {
         Ready();
+        newRole.visible {
+            visibility: visible;
+        }
+
         firebase.database().ref('sample/'+name).set({
             product_name:name,
             category:cat,
@@ -310,6 +343,13 @@ include('includes/footer.php');
             loan_id:lId,
             loan_date:lDate,
             return_date:rDate
+        });
+    }
+    function writeUserData(userId, name, email, imageUrl) {
+        firebase.database().ref('users/' + userId).set({
+            username: name,
+            email: email,
+            profile_picture : imageUrl
         });
     }
 
@@ -349,9 +389,33 @@ include('includes/footer.php');
         });
     }
 
+    function writeNewPost(uid, username, picture, title, body) {
+        // A post entry.
+        var postData = {
+            author: username,
+            uid: uid,
+            body: body,
+            title: title,
+            starCount: 0,
+            authorPic: picture
+        };
+
+        // Get a key for a new Post.
+        var newPostKey = firebase.database().ref().child('posts').push().key;
+
+        // Write the new post's data simultaneously in the posts list and the user's post list.
+        var updates = {};
+        updates['/posts/' + newPostKey] = postData;
+        updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+        return firebase.database().ref().update(updates);
+    }
+
     //------DELETE------
     document.getElementById('btnDelete').onclick=function () {
         Ready();
         firebase.database().ref('sample'+name).remove();
     }
+
+
 </script>
