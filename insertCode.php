@@ -1,5 +1,5 @@
 <?php
-session.start();
+/*session.start();
 $firebase = new FBconnect('includes/');
 
 if(isset($_POST['save_push_data'])){
@@ -27,21 +27,22 @@ if(isset($_POST['save_push_data'])){
         $_SESSION['status']="Data Not Inserted. Please try again";
     }
 }
-?>
+*/?><!--
 
 <div class="container">
     <?php
-        if(isset($_SESSION['status'])&& $_SESSION['status']!=""){
-            ?>
+/*        if(isset($_SESSION['status'])&& $_SESSION['status']!=""){
+            */?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Hey</strong>
-                <?php echo $_SESSION['status'];?>
+                <?php /*echo $_SESSION['status'];*/?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
        <?php
-        unset($_SESSION['status']);
+/*        unset($_SESSION['status']);
         }
-    ?>
+    */?>
 </div>
+-->
