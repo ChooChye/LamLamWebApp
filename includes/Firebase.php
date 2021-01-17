@@ -21,7 +21,9 @@ class FBconnect{
             ->create();
 
         $this->database = $firebase->getDatabase();
+
     }
+
 
     //$ref = reference to DB | $data = array of data
     public function insertData($ref, $data){
