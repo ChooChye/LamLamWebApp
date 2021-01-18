@@ -13,7 +13,7 @@ $ref = "Categories";
 
 //Add new category
 if (isset($_POST['newCategoryBtn'])) {
-    $newCategory = $_POST['newCategory'];
+    $newCategory = ucfirst($_POST['newCategory']);
     try {
         if ($fb->checkNode($ref, $newCategory)) {
             echo alertInfo('<b>' . $_POST['newCategory'] . '</b> is already in the list</div>');
