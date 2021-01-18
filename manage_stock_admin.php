@@ -4,6 +4,25 @@ include('includes/Helper.php');
 $header = new Header('', 'Manage Stock (Admin)');
 $header->initHeader();
 
+
+$fb = new FBconnect('includes/');
+//DELETE DATA
+if (isset($_POST['btnDelete'])){
+
+    try {
+
+        $token=$_POST['ref_token_delete'];
+        $ref="Products/".$token;
+
+        $fb->database->getReference($ref)->remove();
+        echo alertSuccess(' Data has been deleted');
+    }
+
+    catch (Exception $e) {
+        echo alertError($e);
+    }
+}
+
 ?>
 
 <?php include('includes/navbar.php') ?>
@@ -22,45 +41,31 @@ $header->initHeader();
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="navbar-text" aria-current="page" href="#">
-                            <div class="form-check form-check-inline">
+                            <div class="form-check form-check-inline" >
                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox_all" value="option1">
                                 <label class="form-check-label" for="inlineCheckbox_all">All</label>
                             </div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="navbar" href="#">
-                            <button id="btnAdd" onclick="location.href='insertNewData.php'">
+
+                            <button id="btnAdd" onclick="location.href='insertNewData.php'" class="btn">
                                 <img src="add.svg" alt="" width="30" height="20" class="d-inline-block align-top">
                                 Add
                             </button>
 
-                        </a>
 
-                        <!--ADD / CREATE FUNCTION-->
- <!--                       <script>
-                            firebase.database().ref('prod/' + userId).set({
-                                username: name,
-                                email: email,
-                                profile_picture : imageUrl
-                            });
 
-                            var commentsRef = firebase.database().ref('post-comments/' + postId);
-                            commentsRef.on('child_added', function(data) {
-                                addCommentElement(postElement, data.key, data.val().text, data.val().author);
-                            });
-                        </script>
--->
                     </li>
 
                     <li>
-                        <div class="row justify-content-end">
+                      <!--  <div class="row justify-content-end">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <input type="text" id="search-name" class="form-control" placeholder="Search">
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </li>
 
                 </ul>
@@ -73,6 +78,7 @@ $header->initHeader();
 
     <thead>
     <tr>
+
         <td></td>
         <th>Product Name</th>
         <th>Category </th>
@@ -96,164 +102,88 @@ $header->initHeader();
         <th>Loan Date</th>
         <th>Return Date</th>
         <th>Actions</th>
+        <td style="visibility: hidden"></td>
     </tr>
     </thead>
     <tbody>
 
- <!--   <tr>
-        <td>
-            <div>
-                <input type="checkbox" id="checkboxNoLabel" value="" >
-            </div>
-        </td>
-        <td>Blue Sweatshirt</td>
-        <td>Tops</td>
-        <td>Blue Sweatshirt with Hoodie</td>
-        <td>RM 39.00</td>
-        <td>10</td>
-        <td>In Stock</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <button type="button" class="close">
-                <img src="delete.svg" width="20" height="20">
-            </button>
-
-            <button type="button" class="close">
-                <img src="edit.svg" width="20" height="20">
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div>
-                <input type="checkbox" id="checkboxNoLabel" value="" >
-            </div>
-        </td>
-        <td>Levi's Jeans (Black)</td>
-        <td>Jeans</td>
-        <td>Black Levi's Jeans </td>
-        <td>RM 89.00</td>
-        <td>0</td>
-        <td>Out of Stock</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td>
-            <button type="button" class="close" >
-                <img src="delete.svg" width="20" height="20">
-            </button>
-
-            <button type="button" class="close">
-                <img src="edit.svg" width="20" height="20">
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div>
-                <input type="checkbox" id="checkboxNoLabel" value="" >
-            </div>
-        </td>
-        <td>Pink Sweatshirt</td>
-        <td>Tops</td>
-        <td>Pink Sweatshirt with Hoodie</td>
-        <td>RM 39.00</td>
-        <td>10</td>
-        <td>Loan</td>
-        <td>1912121</td>
-        <td>33064</td>
-        <td>1/12/2020</td>
-        <td>30/12/2020</td>
-        <td>
-            <button type="button" class="close" name="btnDelete">
-                <img src="delete.svg" width="20" height="20">
-            </button>
-
-            <button type="button" class="close" name="btnEdit">
-                <img src="edit.svg" width="20" height="20">
-            </button>
-        </td>
-    </tr>-->
-
     <!--PRINT DATA IN PRODUCTS DATABASE-->
     <?php
-      //  include('includes/Firebase.php');
-         $firebase = new FBconnect('includes/');
-        $prodRef="Products/";
-        $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+    $i = 0;
 
-        foreach ($fetchdata as $key=>$row){
+    $firebase = new FBconnect('includes/');
+    $prodRef="Products/";
+    $returnRef="Return History/";
 
-    ?>
-    <tr id="currentData" class="visible">
-        <td>
-            <div>
-                <input type="checkbox" id="checkboxNoLabel" value="" >
-            </div>
-        </td>
-        <td><label id="currentName"><?php echo $row['product_name']; ?></td>
-        <td><label id="currentCategory"><?php echo $row['category']; ?></td>
-        <td><label id="currentDesc"><?php echo $row['desc']; ?></td>
-        <td><label id="currentPrice"><?php echo $row['price']; ?></td>
-        <td><label id="currentQty"><?php echo $row['qty']; ?></td>
-        <td><label id="currentStatus"></td>
-        <td><label id="currentStaffID"></td>
-        <td><label id="currentLoanID"></td>
-        <td><label id="currentLoanDate"></td>
-        <td><label id="currentReturnDate"></td>
-        <td>
-            <button type="button" class="close" name="btnDelete" >
-                <img src="delete.svg" width="20" height="20">
-            </button>
+    $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+    $fetchdata1=$firebase->database->getReference($returnRef)->getValue();
 
-            <button type="button" class="close" name="btnEdit">
-                <img src="edit.svg" width="20" height="20">
-            </button>
-        </td>
-    </tr>
+
+
+    if($fetchdata>0){
+
+       foreach ($fetchdata  as $key=>$row  ){
+
+            $i++;
+
+        ?>
+        <tr id="currentData" class="visible">
+
+            <td>
+                <div>
+                    <input type="checkbox" id="checkboxNoLabel" value="" >
+                </div>
+            </td>
+            <td><?php echo $row['product_name'];  ?></td>
+            <td><?php echo $row['category']; ?></td>
+            <td><?php echo $row['desc']; ?></td>
+            <td><?php echo $row['price']; ?></td>
+            <td><?php echo $row['qty']; ?></td>
+            <td><?php echo "In Stocks" ?></td>
+            <td><label id="currentStaffID"></td>
+            <td><label id="currentLoanID"></td>
+            <td><label id="currentLoanDate"></td>
+            <td><label id="currentReturnDate"></td>
+            <td>
+                <form action="" method="post">
+                    <div class="form-group">
+                       <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
+                        <button type="submit" class="close" name="btnDelete" >
+                            <img src="delete.svg" width="20" height="20">
+
+                        </button>
+
+                        <button type="button" class="close" name="btnEdit" onclick="location.href='editData.php'" >
+
+                          <!--  <a href="viewproject.php?pid='.$row['pid'].'">-->
+                                <a href="editData.php?token=<?php echo $key?>">
+                                <img src="edit.svg" width="20" height="20">
+                            </a>
+                        </button>
+                    </div>
+                </form>
+            </td>
+            <td style="visibility: hidden"><?php echo $i; ?></td>
+        </tr>
+        <?php
+       }
+
+    }
+    else{
+        ?>
+        <tr>
+            <td colspan="12" style="text-align: center">Data Not Available in the Firebase</td>
+        </tr>
     <?php
-        }
+    }
     ?>
-   <!-- <tr id="newRow" class="invisible">
-        <td>
-            <div>
-                <input type="checkbox" id="checkboxNoLabel" value="" >
-            </div>
-        </td>
-        <td><input id="pname" type="text"></td>
-        <td><input id="pcat" type="text"></td>
-        <td><input id="pdesc" type="text"></td>
-        <td><input id="pprice" type="text"></td>
-        <td><input id="pqty" type="number"></td>
-        <td><input id="pstatus" type="text"></td>
-        <td><input id="staffID" type="text"></td>
-        <td><input id="loanID" type="text"></td>
-        <td><input id="loanDate" type="date"></td>
-        <td><input id="returnDate" type="date"></td>
-        <td>
-            <button type="button" class="close" name="btnDelete" >
-                <img src="delete.svg" width="20" height="20">
-            </button>
 
-            <button type="button" class="close" name="btnEdit">
-                <img src="edit.svg" width="20" height="20">
-            </button>
-        </td>
-    </tr>-->
     </tbody>
 </table>
 </div>
 
 <?php
 include('includes/footer.php');
-
-
-
-
 
 ?>
 
@@ -324,8 +254,28 @@ include('includes/footer.php');
 
     }
 
+   /* function getdata() {
+        name=document.getElementById('currentName').value;
+     /!*   cat=document.getElementById('currentCategory').value;
+        description=document.getElementById('currentDesc').value;
+        prodPrice=document.getElementById('currentPrice').value;
+        quantity=document.getElementById('currentQty').value;
+*!/
+        firebase.database().ref('Products/'+name).on('value',function (snapshot){
+            var category=snapshot.val().category;
+            var desc=snapshot.val().desc;
+            var price=snapshot.val().price;
+            var qty=snapshot.val().qty;
 
-    //------INSERT------
+            document.getElementById("currentCategory").innerHTML=category
+            document.getElementById("currentDesc").innerHTML=desc
+            document.getElementById("price").innerHTML=price
+            document.getElementById("qty").innerHTML=qty
+        }
+    }*/
+
+
+/*    //------INSERT------
     document.getElementById('btnAdd').onclick=function () {
         Ready();
         newRole.visible {
@@ -345,13 +295,7 @@ include('includes/footer.php');
             return_date:rDate
         });
     }
-    function writeUserData(userId, name, email, imageUrl) {
-        firebase.database().ref('users/' + userId).set({
-            username: name,
-            email: email,
-            profile_picture : imageUrl
-        });
-    }
+
 
     //------SELECTION------
     document.getElementById("select").onclick=function () {
@@ -415,7 +359,7 @@ include('includes/footer.php');
     document.getElementById('btnDelete').onclick=function () {
         Ready();
         firebase.database().ref('sample'+name).remove();
-    }
+    }*/
 
 
 </script>

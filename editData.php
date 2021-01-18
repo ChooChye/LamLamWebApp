@@ -5,8 +5,9 @@ $header = new Header('', 'Manage Stock (Admin)');
 $header->initHeader();
 
 $fb = new FBconnect('includes/');
-$ref = "Categories";
-
+//$ref = "Categories";
+$token = $_GET['token'];
+$getdata=$fb->database->getReference('Products')->getChild($token)->getValue();
 
 function getCatList($fb)
 {
@@ -23,8 +24,8 @@ function getCatList($fb)
     }
 }
 
-//Add new product
-if (isset($_POST['save_push_data'])) {
+//Update product
+if (isset($_POST['update'])) {
     $child = $_POST['category'];
     try {
         $data = [
@@ -36,25 +37,33 @@ if (isset($_POST['save_push_data'])) {
             "price" => $_POST['price']
         ];
 
-        $fb->database->getReference("Products/".$token)->push($data);
-        echo alertSuccess(' Data has been added successfully');
+
+        $ref="Products/".$token;
+
+      $fb->database->getReference($ref)->update($data);
+
+        echo alertSuccess(' Data has been updated successfully');
     } catch (Exception $e) {
         echo alertError($e);
     }
 }
+
+
 ?>
+
 
 <?php include('includes/navbar.php') ?>
 
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6 mt-4">
-            <h4>Add New Stocks Data</h4><hr>
-             <form action="" method="post">
+            <h4>Update Stocks Data</h4><hr>
+            <form action="" method="post">
+                <input type="hidden" name="token" value="<?php echo $token?>">
                 <div class="form-group">
                     <label>Category:</label><br>
-                    <select name="category" class="form-control">
-
+                    <select name="category" class="form-control" >
+                        <option selected><?php echo $getdata['category']?></option>
                         <?php
                         getCatList($fb);
                         ?>
@@ -64,29 +73,33 @@ if (isset($_POST['save_push_data'])) {
 
                 <div class="form-group">
                     <label>Product Name:</label>
-                    <input type="text " name="product_name" class="form-control" required>
+                    <input type="text " name="product_name" class="form-control"
+                           value="<?php echo $getdata['product_name']?>">
                 </div>
 
                 <div class="form-group">
                     <label>Desciption:</label>
-                    <input type="text " name="desc" class="form-control" required>
+                    <input type="text " name="desc" class="form-control"
+                           value="<?php echo $getdata['desc']?>">
                 </div>
 
                 <div class="form-group">
                     <label>Price    : </label>
-                    <input type="number " name="price" class="form-control" required>
+                    <input type="number " name="price" class="form-control"
+                           value="<?php echo $getdata['price']?>">
                 </div>
 
                 <div class="form-group">
                     <label>Quantity :</label>
-                    <input type="number " name="qty" class="form-control" required>
+                    <input type="number " name="qty" class="form-control"
+                           value="<?php echo $getdata['qty']?>">
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" name="save_push_data" class="btn btn-primary">Add Data</button>
+                    <button type="submit" name="update" class="btn btn-primary" >Update Data</button>
                     <button type="button" class="btn " onclick="location.href='manage_stock_admin.php'">Cancel</button>
                 </div>
-             </form>
+            </form>
         </div>
     </div>
 

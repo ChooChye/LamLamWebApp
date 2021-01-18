@@ -3,6 +3,33 @@ include('includes/Header.php');
 include('includes/Helper.php');
 $header = new Header('', 'Generate Report');
 $header->initHeader();
+
+
+$fb = new FBconnect('includes/');
+$ref = "Categories";
+
+
+//if (isset($_POST['search'])) {
+  //  $getdata = $fb->database->getReference('Products')->getChild($token)->getValue();
+//}
+
+function getCatList($fb)
+{
+    $listArray = array();
+    $i = 0;
+    $cat = $fb->database->getReference('Categories')->getValue();
+    foreach ($cat as $collection => $colRows) {
+        $listArray[$i] = $collection;
+        $i++;
+    }
+    sort($listArray);
+    for ($j = 0; $j < count($listArray); $j++) {
+        echo '<option>' . $listArray[$j] . '</option>';
+    }
+}
+
+
+
 ?>
 <?php include('includes/navbar.php') ?>
 <div class="container">
@@ -12,45 +39,13 @@ $header->initHeader();
     </div>
 
     <form class="col-12 row g-2">
-        <!--
-        <div class="row">
-            <label for="inputCity" class="col form-label">Product Name</label>
-            <div class="col">
-                <input type="text" class="form-control" id="inputCity">
-            </div>
 
-        </div>
-        <div class="row">
-            <label for="exampleDataList" class="col col-form-label">Email</label>
-            <div class="col-sm-10">
-
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
-                <datalist id="datalistOptions">
-                    <option value="Tops">
-                    <option value="Jeans">
-                    <option value="Dresses">
-                </datalist>
-            </div>
-        </div>
-        <div class=" row">
-            <label for="exampleDataList" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
-                <datalist id="datalistOptions">
-                    <option value="Tops">
-                    <option value="Jeans">
-                    <option value="Dresses">
-                </datalist>
-            </div>
-        </div>
-
-        -->
         <div class="col-12 row g-3">
             <div class="col-4">
 
                 <label for="inputZip" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="inputZip" >
+                <input type="text" class="form-control" id="inputName" >
+
             </div>
             <div class="col">
 
@@ -58,9 +53,12 @@ $header->initHeader();
 
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
                 <datalist id="datalistOptions">
-                    <option value="Dresses">
+                   <!-- <option value="Dresses">
                     <option value="Jeans">
-                    <option value="Tops">
+                    <option value="Tops">-->
+                        <?php
+                        getCatList($fb);
+                        ?>
                 </datalist>
             </div>
 
@@ -68,12 +66,19 @@ $header->initHeader();
 
                 <label for="exampleDataList" class="form-label">Status</label>
 
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Status">
-                <datalist id="datalistOptions">
+               <!-- <input class="form-control" list="datalistOptions" >
+                <datalist>
                     <option value="In Stock">
                     <option value="Out of Stock">
                     <option value="Loan">
-                </datalist>
+                </datalist>-->
+
+                <select class="form-control" aria-label="Default select example">
+                    <option selected>In Stock</option>
+                    <option value="">Out of Stock</option>
+                    <option value="">Loan</option>
+
+                </select>
             </div>
             <div class="col">
 
@@ -88,7 +93,7 @@ $header->initHeader();
 
 
         <div class="col-12 mt-4" >
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary" name="search">Search</button>
             <button type="submit" class="btn" style="border-color: black">Reset</button>
         </div>
     </form>
@@ -108,40 +113,68 @@ $header->initHeader();
         </tr>
         </thead>
         <tbody>
+
+
+        <?php
+
+        if (isset($_POST['search'])){
+            $name=$_POST['product_name'];
+            $category=$_POST['category'];
+            $qty=$_POST['qty'];
+
+
+        }
+        $firebase = new FBconnect('includes/');
+        $prodRef="Products/";
+        //  $token = $_GET['token'];
+        $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+
+        foreach ($fetchdata as $key=>$row){
+
+
+            $name=$row['product_name'];
+            $category=$row['category'];
+            $qty=$row['qty'];
+
+
+        ?>
+
         <tr>
+
             <td>
-                <a class="nav-item" href="#">Levi's Jeans (Black)</a>
-            </td>
-            <td>Jeans</td>
-            <td>0</td>
-            <td>Out of Stock</td>
+                <?php
+
+
+                echo $name;
+
+
+
+                ?></td>
+            <td><?php echo $category; ?></td>
+            <td><?php echo $qty; ?></td>
+            <td><?php echo "In Stocks" ?></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
         </tr>
-        <tr>
-            <td>Pink Sweatshirt</td>
-            <td>Tops</td>
-            <td>10</td>
-            <td>Loan</td>
-            <td>1912121</td>
-            <td>ST888</td>
-            <td>1/12/2020</td>
-            <td>30/12/2020</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+            <?php
+
+        }
+        ?>
+
+        <?php
+
+         //   $str = $row['product_name'];
+        //    echo filter_var($str,filter_input(INPUT_GET,'inputName',FILTER_DEFAULT));
+          //  echo $newstr;
+
+        ?>
+
     </table>
 </div>
+
+
 
 
 <?php
