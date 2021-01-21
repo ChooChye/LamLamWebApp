@@ -10,7 +10,7 @@ $ref = "Categories";
 
 
 //if (isset($_POST['search'])) {
-  //  $getdata = $fb->database->getReference('Products')->getChild($token)->getValue();
+//  $getdata = $fb->database->getReference('Products')->getChild($token)->getValue();
 //}
 
 function getCatList($fb)
@@ -38,13 +38,13 @@ function getCatList($fb)
         <h1 class="h3 mb-0 text-gray-800">Generate Report</h1>
     </div>
 
-    <form class="col-12 row g-2">
+    <form class="col-12 row g-2" method="get">
 
         <div class="col-12 row g-3">
             <div class="col-4">
 
                 <label for="inputZip" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="inputName" >
+                <input type="text" name="keyword" class="form-control" id="inputName" >
 
             </div>
             <div class="col">
@@ -53,12 +53,12 @@ function getCatList($fb)
 
                 <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
                 <datalist id="datalistOptions">
-                   <!-- <option value="Dresses">
-                    <option value="Jeans">
-                    <option value="Tops">-->
-                        <?php
-                        getCatList($fb);
-                        ?>
+                    <!-- <option value="Dresses">
+                     <option value="Jeans">
+                     <option value="Tops">-->
+                    <?php
+                    getCatList($fb);
+                    ?>
                 </datalist>
             </div>
 
@@ -66,12 +66,12 @@ function getCatList($fb)
 
                 <label for="exampleDataList" class="form-label">Status</label>
 
-               <!-- <input class="form-control" list="datalistOptions" >
-                <datalist>
-                    <option value="In Stock">
-                    <option value="Out of Stock">
-                    <option value="Loan">
-                </datalist>-->
+                <!-- <input class="form-control" list="datalistOptions" >
+                 <datalist>
+                     <option value="In Stock">
+                     <option value="Out of Stock">
+                     <option value="Loan">
+                 </datalist>-->
 
                 <select class="form-control" aria-label="Default select example">
                     <option selected>In Stock</option>
@@ -93,7 +93,7 @@ function getCatList($fb)
 
 
         <div class="col-12 mt-4" >
-            <button type="submit" class="btn btn-primary" name="search">Search</button>
+            <button type="submit" class="btn btn-primary">Search</button>
             <button type="submit" class="btn" style="border-color: black">Reset</button>
         </div>
     </form>
@@ -117,60 +117,44 @@ function getCatList($fb)
 
         <?php
 
-        if (isset($_POST['search'])){
-            $name=$_POST['product_name'];
+        if (isset($_GET['keyword'])){
+            $kword = strtoupper($_GET['keyword']);
+            /*$name=$_POST['product_name'];
             $category=$_POST['category'];
-            $qty=$_POST['qty'];
+            $qty=$_POST['qty'];*/
 
 
-        }
+        $array = array();
         $firebase = new FBconnect('includes/');
-        $prodRef="Products/";
+        $prodRef = "Products/";
         //  $token = $_GET['token'];
+        //$fetchdata=$firebase->database->getReference($prodRef)->getValue();
+
         $fetchdata=$firebase->database->getReference($prodRef)->getValue();
 
-        foreach ($fetchdata as $key=>$row){
+        foreach ($fetchdata as $key => $row) {
 
+            $name = strtoupper($row['product_name']);
+            $nameForGUI = $row['product_name'];
 
-            $name=$row['product_name'];
-            $category=$row['category'];
-            $qty=$row['qty'];
+            if (strpos($name, $kword) !== false) {
+                $category = $row['category'];
+                $qty = $row['qty'];
 
-
-        ?>
-
-        <tr>
-
-            <td>
-                <?php
-
-
-                echo $name;
-
-
-
-                ?></td>
-            <td><?php echo $category; ?></td>
-            <td><?php echo $qty; ?></td>
-            <td><?php echo "In Stocks" ?></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-            <?php
-
+                echo '<tr>
+                <td>'.$nameForGUI.'</td>
+                <td>'.$category.'</td>
+                <td>'.$qty.'</td>
+                <td>In Stocks</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>';
+            }
         }
-        ?>
-
-        <?php
-
-         //   $str = $row['product_name'];
-        //    echo filter_var($str,filter_input(INPUT_GET,'inputName',FILTER_DEFAULT));
-          //  echo $newstr;
-
-        ?>
-
+        }
+            ?>
     </table>
 </div>
 
