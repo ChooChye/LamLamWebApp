@@ -114,7 +114,6 @@
         }, function(error) {
             // An error happened.
             alert(error);
-
         });
 
     }

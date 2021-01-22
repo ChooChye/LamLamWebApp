@@ -90,6 +90,7 @@
 
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-database.js"></script>
 <script>
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -119,7 +120,7 @@
             var uid = auth.currentUser;
             //alert(email + password);
             var email = user.email;
-            console.log(email);
+            /*window.location.href = "http://localhost/www/FYP/WebApp/qrcode.php";*/
         }
     })
 
@@ -132,8 +133,25 @@
             .then((userCredential) => {
                 // Signed in
                 get('loginBtn').disabled = true;
-                var user = userCredential.user;
-                window.location.href = "http://localhost/www/FYP/WebApp/qrcode.php";
+                var userId = auth.currentUser.uid;
+                console.log(userId);
+                firebase.database().ref('User/' + userId).once('value').then((snapshot) => {
+                    role = snapshot.val().role;
+                    if(role == "admin"){
+                        window.location.href = "http://localhost/www/FYP/WebApp/qrcode.php";
+                    }else{
+                        get('loginBtn').disabled = false;
+                        get('errorMsg').innerHTML = "You do not have privileges to access this site";
+                        get('errorMsg').style.display = 'block';
+                        firebase.auth().signOut().then(function() {
+
+                        }, function(error) {
+                            // An error happened.
+                            alert(error);
+                        });
+                    }
+                });
+
             })
             .catch((error) => {
                 var errorCode = error.code;
