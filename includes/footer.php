@@ -76,6 +76,20 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+
+    function signOut(){
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful.
+
+            window.location.href = "login.php";
+        }, function(error) {
+            // An error happened.
+            alert(error);
+
+        });
+
+    }
 </script>
 
 </body>
