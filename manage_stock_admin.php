@@ -34,9 +34,8 @@ if (isset($_POST['btnDelete'])){
 
     <table class="table table-bordered">
 
-    <nav class="navbar navbar-expand-lg >
+    <nav class="navbar navbar-expand-lg" >
         <div class="container-fluid">
-
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
@@ -98,11 +97,11 @@ if (isset($_POST['btnDelete'])){
             -->
         </th>
         <th>Staff ID</th>
+        <th>Retailer ID</th>
         <th>Loan ID</th>
         <th>Loan Date</th>
-        <th>Return Date</th>
         <th>Actions</th>
-        <td style="visibility: hidden"></td>
+
     </tr>
     </thead>
     <tbody>
@@ -113,61 +112,212 @@ if (isset($_POST['btnDelete'])){
 
     $firebase = new FBconnect('includes/');
     $prodRef="Products/";
-    $returnRef="Return History/";
-
     $fetchdata=$firebase->database->getReference($prodRef)->getValue();
-    $fetchdata1=$firebase->database->getReference($returnRef)->getValue();
 
-
+    $loadRef = "Loans/";
+    $fetchdata1=$firebase->database->getReference($loadRef)->getValue();
 
     if($fetchdata>0){
 
        foreach ($fetchdata  as $key=>$row  ){
+            $pname = $row['product_name'];
+            $category = $row['category'];
+            $desc = $row['desc'];
+            $price = $row['price'];
+            $qty = $row['qty'];
 
-            $i++;
+            if ($qty>0){
 
-        ?>
-        <tr id="currentData" class="visible">
+         /*  echo '<tr>
+                     <td>
+                      <div>
+                         <input type="checkbox" id="checkboxNoLabel" value="" >
+                       </div>
+                      </td>
+                      <td>'.$pname.'</td>
+                      <td>'.$category.'</td>
+                      <td>'.$desc.'</td>
+                      <td>'.$price.'</td>
+                      <td>'.$qty.'</td>
+                      <td>In Stock</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                                        <td>
+                                            <form action="" method="post">
+                                                <div class="form-group">
+                                                   <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
+                                                    <button type="submit" class="close" name="btnDelete" >
+                                                        <img src="delete.svg" width="20" height="20">
+                            
+                                                    </button>
+                            
+                                                    <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
+                                                            <a href="editData.php?token=<?php echo $key?>">
+                                                            <img src="edit.svg" width="20" height="20">
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        </tr>';*/
 
-            <td>
-                <div>
-                    <input type="checkbox" id="checkboxNoLabel" value="" >
-                </div>
-            </td>
-            <td><?php echo $row['product_name'];  ?></td>
-            <td><?php echo $row['category']; ?></td>
-            <td><?php echo $row['desc']; ?></td>
-            <td><?php echo $row['price']; ?></td>
-            <td><?php echo $row['qty']; ?></td>
-            <td><?php echo "In Stocks" ?></td>
-            <td><label id="currentStaffID"></td>
-            <td><label id="currentLoanID"></td>
-            <td><label id="currentLoanDate"></td>
-            <td><label id="currentReturnDate"></td>
-            <td>
-                <form action="" method="post">
-                    <div class="form-group">
-                       <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
-                        <button type="submit" class="close" name="btnDelete" >
-                            <img src="delete.svg" width="20" height="20">
+                ?>
+                <tr id="currentData" class="visible">
 
-                        </button>
+                    <td>
+                        <div>
+                            <input type="checkbox" id="checkboxNoLabel" value="" >
+                        </div>
+                    </td>
+                    <td><?php echo $pname;  ?></td>
+                    <td><?php echo $category; ?></td>
+                    <td><?php echo $desc; ?></td>
+                    <td><?php echo $price; ?></td>
+                    <td><?php echo $qty; ?></td>
+                    <td><?php echo "In Stocks" ?></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
+                                <button type="submit" class="close" name="btnDelete" >
+                                    <img src="delete.svg" width="20" height="20">
 
-                        <button type="button" class="close" name="btnEdit" onclick="location.href='editData.php'" >
+                                </button>
 
-                          <!--  <a href="viewproject.php?pid='.$row['pid'].'">-->
-                                <a href="editData.php?token=<?php echo $key?>">
-                                <img src="edit.svg" width="20" height="20">
-                            </a>
-                        </button>
-                    </div>
-                </form>
-            </td>
-            <td style="visibility: hidden"><?php echo $i; ?></td>
-        </tr>
-        <?php
+                                <button type="button" class="close" name="btnEdit" onclick="location.href='editData.php'" >
+                                    <a href="editData.php?token=<?php echo $key?>">
+                                        <img src="edit.svg" width="20" height="20">
+                                    </a>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="visibility: hidden"><?php echo $i; ?></td>
+                </tr>
+
+                <?php
+           }elseif ($qty==0){
+
+
+
+           ?>
+
+             <tr id="currentData" class="visible">
+
+                    <td>
+                        <div>
+                            <input type="checkbox" id="checkboxNoLabel" value="" >
+                        </div>
+                    </td>
+                    <td><?php echo $pname;  ?></td>
+                    <td><?php echo $category; ?></td>
+                    <td><?php echo $desc; ?></td>
+                    <td><?php echo $price; ?></td>
+                    <td><?php echo $qty; ?></td>
+                    <td><?php echo "Out of Stocks" ?></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
+                                <button type="submit" class="close" name="btnDelete" >
+                                    <img src="delete.svg" width="20" height="20">
+
+                                </button>
+
+                                <button type="button" class="close" name="btnEdit" onclick="location.href='editData.php'" >
+                                    <a href="editData.php?token=<?php echo $key?>">
+                                        <img src="edit.svg" width="20" height="20">
+                                    </a>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                    <td style="visibility: hidden"><?php echo $i; ?></td>
+                </tr>
+
+
+                <?php
+
+            }
+
        }
 
+        foreach ($fetchdata1 as $key1 ){
+
+            foreach ($key1 as $key2=>$row2){
+                $status=  $row2['status'];
+                $retailerID=  $row2['retailerID'];
+                $staffID=  $row2['staffID'];
+                $loanID=  $row2['loanID'];
+                $loanDate=  $row2['loanDate'];
+                $test= $row2['productName'];
+
+                foreach ($test as $key3 => $row3)
+                {
+                        foreach ($fetchdata as $key => $row) {
+                            $category = $row['category'];
+                            $name = $row['product_name'];
+                            $desc = $row['desc'];
+                            $price = $row['price'];
+                            $qty= $row['qty'];
+
+
+                            if ($key3==$name){
+                                echo '<tr>
+                                         <td>
+                                            <div>
+                                                <input type="checkbox" id="checkboxNoLabel" value="" >
+                                            </div>
+                                        </td>
+                                        <td>'.$key3.'</td>
+                                         <td>'.$category.'</td>
+                                        <td>'.$desc.'</td>
+                                        <td>'.$price.'</td>
+                                       
+                                 
+                                        <td>'.$row3.'</td>
+                                         <td>Loans '.$status.'</td>
+                                        <td>'.$staffID.'</td>
+                                        <td>'.$retailerID.'</td>
+                                        <td>'.$loanID.'</td>
+                                        <td>'.$loanDate.'</td>
+                                        <td>
+                                            <form action="" method="post">
+                                                <div class="form-group">
+                                                   <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
+                                                    <button type="submit" class="close" name="btnDelete" >
+                                                        <img src="delete.svg" width="20" height="20">
+                            
+                                                    </button>
+                            
+                                                    <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
+                            
+                                                      <!--  <a href="viewproject.php?pid=\'.$row[\'pid\'].\'">-->
+                                                            <a href="editData.php?token=<?php echo $key?>">
+                                                            <img src="edit.svg" width="20" height="20">
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </td>
+                                        </tr>';
+                            }
+
+                        }
+                }
+
+            }
+        }
     }
     else{
         ?>

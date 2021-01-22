@@ -54,6 +54,23 @@ function getCatList($fb)
                 </datalist>
             </div>
 
+            <div class="col">
+
+                <label for="exampleDataList" class="form-label">Status</label>
+
+                <input class="form-control" list="data" id="exampleDataList" placeholder="" name="selectStatus">
+                <datalist id="data">
+                    <option>In Stock</option>
+                    <option>Out of Stock</option>
+                    <option>Loan</option>
+                </datalist>
+            </div>
+
+            <div class="col">
+
+                <label for="inputZip" class="form-label">Loan ID</label>
+                <input type="text" class="form-control" name="inputLID" >
+            </div>
 
             <div class="col">
 
@@ -64,35 +81,13 @@ function getCatList($fb)
                 <label for="inputZip" class="form-label">Retailer ID</label>
                 <input type="text" class="form-control" id="inputZip" name="inputRID">
             </div>
+
+
         </div>
 
-         <div class="col-12 row g-3 mt-3">
-                    <div class="col">
-
-                        <label for="exampleDataList" class="form-label">Status</label>
-                      <!--  <select class="form-control" aria-label="Default select example" name="selectStatus">
-                            <option selected>In Stock</option>
-                            <option value="">Out of Stock</option>
-                            <option value="">Loan</option>
-
-                        </select>-->
-
-                        <input class="form-control" list="data" id="exampleDataList" placeholder="" name="selectStatus">
-                        <datalist id="data">
-                            <option>In Stock</option>
-                            <option>Out of Stock</option>
-                            <option>Loan</option>
-                        </datalist>
-                    </div>
+      <!--   <div class="col-12 row g-3 mt-3">
 
                     <div class="col">
-
-                        <label for="inputZip" class="form-label">Loan ID</label>
-                        <input type="text" class="form-control" name="inputLID" >
-                    </div>
-
-                    <div class="col">
-
                         <label for="inputZip" class="form-label">Start Date</label>
                         <input class="form-control" data-date-format="mm/dd/yyyy" type="date" name="startDate">
                     </div>
@@ -100,7 +95,7 @@ function getCatList($fb)
                         <label for="inputZip" class="form-label">End Date</label>
                         <input class="form-control" data-date-format="mm/dd/yyyy" type="date" name="EndDate">
                     </div>
-                </div>
+                </div>-->
 
         <div class="col-12 mt-4" >
             <button type="submit" class="btn btn-primary">Search</button>
@@ -196,6 +191,47 @@ function getCatList($fb)
             $kwordSID = $_GET['inputSID'];
             $kwordLID = strtoupper($_GET['inputLID']);
 
+            foreach ($fetchdata as $key => $row) {
+
+                $testing = strtoupper($row['category']);
+
+                if ($kwordsStatus==="IN STOCK") {
+                    $category = $row['category'];
+                    $qty = $row['qty'];
+                    $name1 = $row['product_name'];
+
+                    echo '<tr>
+                    <td>'.$name1.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$qty.'</td>
+                    <td>In Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+                }elseif ($kwordsStatus==="OUT OF STOCK"){
+                    $category = $row['category'];
+                    $qty = $row['qty'];
+                    $name1 = $row['product_name'];
+
+                    if($qty==0){
+                        echo '<tr>
+                    <td>'.$name1.'</td>
+                    <td>'.$category.'</td>
+                    <td>0</td>
+                    <td>Out of Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+                    }
+
+
+                }
+            }
+
             foreach ($fetchdata1 as $key1 ){
 
                 foreach ($key1 as $key2=>$row2){
@@ -204,12 +240,40 @@ function getCatList($fb)
                     $staffID=  $row2['staffID'];
                     $loanID=  $row2['loanID'];
                     $loanDate=  $row2['loanDate'];
+                    $test= $row2['productName'];
+
 
                     $upperRID= strtoupper( $row2['retailerID']);
                     $upperSID= strtoupper( $row2['staffID']);
                     $upperLID=  strtoupper($row2['loanID']);
 
-                    if ($kwordsStatus="LOAN") {
+                    foreach ($test as $key3 => $row3)
+                    {
+                        if ($kwordsStatus==="LOAN"||$kwordRID==$retailerID||$kwordLID==$loanID||$kwordSID==$staffID) {
+                            
+                            foreach ($fetchdata as $key => $row) {
+                                $category = $row['category'];
+                                $name = $row['product_name'];
+
+                                if ($key3==$name){
+                                    echo '<tr>
+                                        <td>'.$key3.'</td>
+                                        <td>'.$category.'</td>
+                                        <td>'.$row3.'</td>
+                                         <td>Loans '.$status.'</td>
+                                        <td>'.$staffID.'</td>
+                                        <td>'.$retailerID.'</td>
+                                        <td>'.$loanID.'</td>
+                                        <td>'.$loanDate.'</td>
+                                        </tr>';
+                                }
+
+
+                            }
+                        }
+                    }
+
+           /*         if ($kwordsStatus==="LOAN") {
                         $category = $row['category'];
                         $qty = $row['qty'];
                         $name1 = $row['product_name'];
@@ -224,11 +288,9 @@ function getCatList($fb)
                     <td>'.$loanID.'</td>
                     <td>'.$loanDate.'</td>
                     </tr>';
-                    }else{
-                        echo "error";
-                    }
+                    }*/
 
-                    if ($kwordRID===$retailerID) {
+                /*    if ($kwordsStatus==="LOAN"||$kwordRID==$retailerID||$kwordLID==$loanID) {
                         $category = $row['category'];
                         $qty = $row['qty'];
                         $name1 = $row['product_name'];
@@ -243,9 +305,12 @@ function getCatList($fb)
                     <td>'.$loanID.'</td>
                     <td>'.$loanDate.'</td>
                     </tr>';
-                    }
 
-                    if ($kwordSID===$staffID) {
+
+                    }*/
+
+
+           /*         if ($kwordLID==$loanID) {
                         $category = $row['category'];
                         $qty = $row['qty'];
                         $name1 = $row['product_name'];
@@ -260,24 +325,38 @@ function getCatList($fb)
                     <td>'.$loanID.'</td>
                     <td>'.$loanDate.'</td>
                     </tr>';
-                    }
+                    }*/
 
-                    if ($kwordLID===$loanID) {
-                        $category = $row['category'];
-                        $qty = $row['qty'];
-                        $name1 = $row['product_name'];
+                  /*  foreach ($test as $key3 => $row3)
+                    {
+                        if ($kwordSID==$staffID) {
+                            $category = $row['category'];
+                            $qty = $row['qty'];
+                            $name1 = $row['product_name'];
 
-                        echo '<tr>
-                    <td>'.$name1.'</td>
-                    <td>'.$category.'</td>
-                    <td>'.$qty.'</td>
-                     <td>Loans '.$status.'</td>
-                    <td>'.$staffID.'</td>
-                    <td>'.$retailerID.'</td>
-                    <td>'.$loanID.'</td>
-                    <td>'.$loanDate.'</td>
-                    </tr>';
-                    }
+
+
+                            foreach ($fetchdata as $key => $row) {
+                                $category = $row['category'];
+                                $name = $row['product_name'];
+
+                                if ($key3==$name){
+                                    echo '<tr>
+                                        <td>'.$key3.'</td>
+                                        <td>'.$category.'</td>
+                                        <td>'.$row3.'</td>
+                                         <td>Loans '.$status.'</td>
+                                        <td>'.$staffID.'</td>
+                                        <td>'.$retailerID.'</td>
+                                        <td>'.$loanID.'</td>
+                                        <td>'.$loanDate.'</td>
+                                        </tr>';
+                                }
+
+
+                            }
+                        }
+                    }*/
                 }
             }
         }
