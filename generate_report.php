@@ -44,14 +44,14 @@ function getCatList($fb)
             <div class="col-4">
 
                 <label for="inputZip" class="form-label">Product Name</label>
-                <input type="text" name="keyword" class="form-control" id="inputName" >
+                <input type="text"  class="form-control" name="inputName" >
 
             </div>
             <div class="col">
 
                 <label for="exampleDataList" class="form-label">Category</label>
 
-                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="">
+                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="" name="selectionCat">
                 <datalist id="datalistOptions">
                     <!-- <option value="Dresses">
                      <option value="Jeans">
@@ -83,11 +83,11 @@ function getCatList($fb)
             <div class="col">
 
                 <label for="inputZip" class="form-label">Staff ID</label>
-                <input type="text" class="form-control" id="inputZip" >
+                <input type="text" class="form-control" id="inputZip" name="inputSID">
             </div>
             <div class="col">
                 <label for="inputZip" class="form-label">Retailer ID</label>
-                <input type="text" class="form-control" id="inputZip" >
+                <input type="text" class="form-control" id="inputZip" name="inputRID">
             </div>
         </div>
 
@@ -117,43 +117,67 @@ function getCatList($fb)
 
         <?php
 
-        if (isset($_GET['keyword'])){
-            $kword = strtoupper($_GET['keyword']);
-            /*$name=$_POST['product_name'];
-            $category=$_POST['category'];
-            $qty=$_POST['qty'];*/
-
-
         $array = array();
         $firebase = new FBconnect('includes/');
         $prodRef = "Products/";
-        //  $token = $_GET['token'];
-        //$fetchdata=$firebase->database->getReference($prodRef)->getValue();
-
         $fetchdata=$firebase->database->getReference($prodRef)->getValue();
 
-        foreach ($fetchdata as $key => $row) {
+        if (isset($_GET['inputName'])){
+            $kword = strtoupper($_GET['inputName']);
 
-            $name = strtoupper($row['product_name']);
-            $nameForGUI = $row['product_name'];
+            foreach ($fetchdata as $key => $row) {
 
-            if (strpos($name, $kword) !== false) {
-                $category = $row['category'];
-                $qty = $row['qty'];
+                $name = strtoupper($row['product_name']);
+                $nameForGUI = $row['product_name'];
+                $testing = strtoupper($row['category']);
+                $testingForGUI = strtoupper($row['category']);
 
-                echo '<tr>
-                <td>'.$nameForGUI.'</td>
-                <td>'.$category.'</td>
-                <td>'.$qty.'</td>
-                <td>In Stocks</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                </tr>';
+
+                if (stripos($name, $kword)  !== false) {
+                    $category = $row['category'];
+                    $qty = $row['qty'];
+
+                    echo '<tr>
+                    <td>'.$nameForGUI.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$qty.'</td>
+                    <td>In Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+                }
             }
         }
+
+        if (isset($_GET['selectionCat'])){
+            $kword1 = strtoupper($_GET['selectionCat']);
+
+            foreach ($fetchdata as $key => $row) {
+
+                $testing = strtoupper($row['category']);
+
+                if (stripos($testing, $kword1)  !== false) {
+                    $category = $row['category'];
+                    $qty = $row['qty'];
+                    $name1 = $row['product_name'];
+
+                    echo '<tr>
+                    <td>'.$name1.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$qty.'</td>
+                    <td>In Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+                }
+            }
         }
+
+
             ?>
     </table>
 </div>
