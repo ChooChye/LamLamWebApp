@@ -120,9 +120,6 @@
             //alert(email + password);
             var email = user.email;
             console.log(email);
-        }else{
-            console.log("logout");
-            //window.location.replace("http://localhost/www/FYP/WebApp/login.php");
         }
     })
 
