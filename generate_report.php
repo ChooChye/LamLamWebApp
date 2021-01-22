@@ -99,7 +99,7 @@ function getCatList($fb)
 
         <div class="col-12 mt-4" >
             <button type="submit" class="btn btn-primary">Search</button>
-            <button type="submit" class="btn" style="border-color: black">Reset</button>
+            <a href="generate_report.php" class="btn" style="border-color: black">Reset</a>
         </div>
     </form>
 
