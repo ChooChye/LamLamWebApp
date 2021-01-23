@@ -126,6 +126,8 @@ function getCatList($fb)
         $firebase = new FBconnect('includes/');
         $prodRef = "Products/";
         $fetchdata=$firebase->database->getReference($prodRef)->getValue();
+        $loadRef = "Loans/";
+        $fetchdata1=$firebase->database->getReference($loadRef)->getValue();
 
         if (isset($_GET['inputName'])){
             $kword = strtoupper($_GET['inputName']);
@@ -152,6 +154,37 @@ function getCatList($fb)
                     <td></td>
                     <td></td>
                     </tr>';
+
+                    foreach ($fetchdata1 as $key1 ){
+
+                        foreach ($key1 as $key2=>$row2){
+                            $status=  $row2['status'];
+                            $retailerID=  $row2['retailerID'];
+                            $staffID=  $row2['staffID'];
+                            $loanID=  $row2['loanID'];
+                            $loanDate=  $row2['loanDate'];
+                            $test= $row2['productName'];
+
+                            foreach ($test as $key3 => $row3)
+                            {
+                                if ($key3==$nameForGUI){
+                                    echo '<tr>
+                    <td>'.$nameForGUI.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$row3.'</td>
+                    <td>Loans '.$status.'</td>
+                    <td>'.$staffID.'</td>
+                    <td>'.$retailerID.'</td>
+                    <td>'.$loanID.'</td>
+                    <td>'.$loanDate.'</td>
+                    </tr>';
+
+
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
         }
@@ -178,12 +211,42 @@ function getCatList($fb)
                     <td></td>
                     <td></td>
                     </tr>';
+
+                    foreach ($fetchdata1 as $key1 ){
+
+                        foreach ($key1 as $key2=>$row2){
+                            $status=  $row2['status'];
+                            $retailerID=  $row2['retailerID'];
+                            $staffID=  $row2['staffID'];
+                            $loanID=  $row2['loanID'];
+                            $loanDate=  $row2['loanDate'];
+                            $test= $row2['productName'];
+
+                            foreach ($test as $key3 => $row3)
+                            {
+                                if ($key3==$name1){
+                                    echo '<tr>
+                    <td>'.$name1.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$row3.'</td>
+                    <td>Loans '.$status.'</td>
+                    <td>'.$staffID.'</td>
+                    <td>'.$retailerID.'</td>
+                    <td>'.$loanID.'</td>
+                    <td>'.$loanDate.'</td>
+                    </tr>';
+
+
+                                }
+                            }
+
+                        }
+                    }
                 }
             }
         }
 
-        $loadRef = "Loans/";
-        $fetchdata1=$firebase->database->getReference($loadRef)->getValue();
+
 
         if (isset($_GET['selectStatus'])){
             $kwordsStatus = strtoupper($_GET['selectStatus']);

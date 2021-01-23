@@ -29,7 +29,7 @@ if (isset($_POST['btnDelete'])){
 <div class="container">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Manage Stocks (Admin)</h1>
+        <h1 class="h3 mb-0 text-gray-800">Manage Stocks </h1>
     </div>
 
     <table class="table table-bordered">
@@ -127,6 +127,7 @@ if (isset($_POST['btnDelete'])){
             $qty = $row['qty'];
 
             if ($qty>0){
+
 
          /*  echo '<tr>
                      <td>

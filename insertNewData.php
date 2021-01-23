@@ -36,7 +36,7 @@ if (isset($_POST['save_push_data'])) {
             "price" => $_POST['price']
         ];
 
-        $fb->database->getReference("Products/".$token)->push($data);
+        $fb->database->getReference("Products/")->push($data);
         echo alertSuccess(' Data has been added successfully');
     } catch (Exception $e) {
         echo alertError($e);
