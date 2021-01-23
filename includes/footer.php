@@ -98,7 +98,7 @@
             document.getElementById('userName').innerHTML = username.toUpperCase();
         });
     }
-
+    getUserName();
     /*window.onload = function initHeaderUserName(){
         var username = getUserName();
         console.log(username);
