@@ -76,6 +76,47 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+    firebase.auth().onAuthStateChanged(function (user){
+        if(user){
+            var uid = firebase.auth().currentUser;
+            //alert(email + password);
+            var email = user.email;
+            getUserName();
+        }else{
+
+            window.location.replace("http://localhost/www/FYP/WebApp/login.php");
+        }
+    })
+
+
+    function getUserName(){
+        var userId = firebase.auth().currentUser.uid;
+        var username = null;
+        firebase.database().ref('User/' + userId).once('value').then((snapshot) => {
+            username = snapshot.val().staffName;
+            document.getElementById('userName').innerHTML = username.toUpperCase();
+        });
+    }
+    getUserName();
+    /*window.onload = function initHeaderUserName(){
+        var username = getUserName();
+        console.log(username);
+        alert(username);
+        //document.getElementById('userName').innerHTML = getUserName();
+    }*/
+
+    function signOut(){
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful.
+
+            window.location.href = "login.php";
+        }, function(error) {
+            // An error happened.
+            alert(error);
+        });
+
+    }
 </script>
 
 </body>

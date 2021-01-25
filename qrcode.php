@@ -6,8 +6,6 @@ include('includes/Helper.php');
 $header = new Header('', 'Generate QR Code');
 $header->initHeader();
 
-
-
 //process
 $fb = new FBconnect('includes/');
 
@@ -15,10 +13,8 @@ $ref = "Categories";
 
 //Add new category
 if (isset($_POST['newCategoryBtn'])) {
-
-    $newCategory = $_POST['newCategory'];
+    $newCategory = ucfirst($_POST['newCategory']);
     try {
-
         if ($fb->checkNode($ref, $newCategory)) {
             echo alertInfo('<b>' . $_POST['newCategory'] . '</b> is already in the list</div>');
         } else {
@@ -32,20 +28,29 @@ if (isset($_POST['newCategoryBtn'])) {
 
 //Add new product
 if (isset($_POST['newProductBtn'])) {
-    $child = $_POST['category'];
-    try {
-        $data = [
-            "category" => $child,
-            "product_name" => $_POST['newProduct'],
-            "desc" => $_POST['prodDesc'],
-            "qty" => $_POST['qty'],
-            "image" => $_FILES['image']['name'],
-            "price" => $_POST['price']
-        ];
+    if(empty($_POST['category'])){
+        echo alertError("<b>Please select a category first</b>");
+    }else{
+        if(!checkString($_POST['newProduct'])){
+            echo alertError($_POST['newProduct'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+        }else{
+            $child = $_POST['category'];
+            try {
+                $data = [
+                    "category" => $child,
+                    "product_name" => $_POST['newProduct'],
+                    "desc" => $_POST['prodDesc'],
+                    "qty" => $_POST['qty'],
+                    "image" => $_FILES['image']['name'],
+                    "price" => $_POST['price']
+                ];
 
-        $fb->database->getReference("Products")->push($data);
-    } catch (Exception $e) {
-        echo alertError($e);
+                $fb->database->getReference("Products")->push($data);
+                echo alertSuccess('<b>' . $_POST['newProduct'] . '</b> has been added successfully</div>');
+            } catch (Exception $e) {
+                echo alertError($e);
+            }
+        }
     }
 }
 
@@ -93,6 +98,23 @@ function getCatList($fb)
     }
 }
 
+function checkString($string){
+    $stat = true;
+    if (strpos($string, '/') !==false){
+        $stat = false;
+    }elseif (strpos($string, '.') !==false){
+        $stat = false;
+    }elseif (strpos($string, '#') !==false){
+        $stat = false;
+    }elseif (strpos($string, '$') !==false){
+        $stat = false;
+    }elseif (strpos($string, '[') !==false){
+        $stat = false;
+    }elseif (strpos($string, ']') !==false){
+        $stat = false;
+    }
+    return $stat;
+}
 ?>
 
 <!-- Page Wrapper -->
@@ -151,7 +173,7 @@ function getCatList($fb)
                         <div class="card shadow mb-4">
                             <div class="card-body">
                                 <?php
-                                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                                if (isset($_POST['genBtn'])) {
                                     echo '    <center>
                                                 <img src="' . $file . '"/><br/>
                                                 <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Print</a>
@@ -289,7 +311,7 @@ function getCatList($fb)
                                     <select name="category" class="form-control" required>
                                         <option selected disabled>Select a Category</option>
                                         <?php
-                                        getCatList($fb);
+                                            getCatList($fb);
                                         ?>
                                     </select>
                                 </div>
@@ -298,6 +320,7 @@ function getCatList($fb)
                                 <div class="form-row">
                                     <input type="text" name="newProduct" id="newProduct" class="form-control"
                                            placeholder="Product Name" required/>
+                                    <span class="small text-muted">Do not enter these symbols <b>/ . # $ [ ]</b></span>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
@@ -325,7 +348,7 @@ function getCatList($fb)
                             </div>
                             <div class="form-group mb-3">
                                 <div class="form-row">
-                                    <input type="file" name="image" id="image" class="form-control" required/>
+                                    <input type="file" name="image" id="image" class="form-control" required style="overflow: hidden"/>
                                 </div>
                             </div>
                     </div>
