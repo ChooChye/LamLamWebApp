@@ -311,7 +311,7 @@ function checkString($string){
                                     <select name="category" class="form-control" required>
                                         <option selected disabled>Select a Category</option>
                                         <?php
-                                        getCatList($fb);
+                                            getCatList($fb);
                                         ?>
                                     </select>
                                 </div>

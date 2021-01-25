@@ -71,7 +71,9 @@ if (isset($_POST['btnDelete'])) {
                                                 </div>
 
                                                 <div class="col">
-                                                    <input type="submit" class="btn btn-primary"  onclick="" name="btnsearch" value="Search"/>
+                                                    <input type="submit" class="btn btn-primary" name="btnsearch" value="Search"/>
+
+                                                    <a href="manage_stock_admin.php" class="btn btn-outline-secondary">Reset</a>
                                                 </div>
                                             </div>
 
@@ -93,7 +95,7 @@ if (isset($_POST['btnDelete'])) {
         <thead>
         <tr>
 
-            <td></td>
+
             <th>Product Name</th>
             <th>Category</th>
             <th>Description</th>
@@ -151,11 +153,6 @@ if (isset($_POST['btnDelete'])) {
 
                         <tr id="currentData" class="visible">
 
-                            <td>
-                                <div>
-                                    <input type="checkbox" id="checkboxNoLabel" value="">
-                                </div>
-                            </td>
                             <td><?php echo $nameForGUI; ?></td>
                             <td><?php echo $category; ?></td>
                             <td><?php echo $desc; ?></td>
@@ -194,11 +191,6 @@ if (isset($_POST['btnDelete'])) {
 
                         <tr id="currentData" class="visible">
 
-                            <td>
-                                <div>
-                                    <input type="checkbox" id="checkboxNoLabel" value="">
-                                </div>
-                            </td>
                             <td><?php echo $nameForGUI; ?></td>
                             <td><?php echo $category; ?></td>
                             <td><?php echo $desc; ?></td>
@@ -259,11 +251,7 @@ if (isset($_POST['btnDelete'])) {
                             if (stripos($loanname1, $kword) !== false) {
                                 if ($key3 == $loanname) {
                                     echo '<tr>
-                                         <td>
-                                            <div>
-                                                <input type="checkbox" id="checkboxNoLabel" value="" >
-                                            </div>
-                                        </td>
+                                         
                                         <td>' . $key3 . '</td>
                                          <td>' . $category . '</td>
                                         <td>' . $desc . '</td>
@@ -357,11 +345,6 @@ if (isset($_POST['btnDelete'])) {
                         ?>
                         <tr id="currentData" class="visible">
 
-                            <td>
-                                <div>
-                                    <input type="checkbox" id="checkboxNoLabel" value="">
-                                </div>
-                            </td>
                             <td><?php echo $pname; ?></td>
                             <td><?php echo $category; ?></td>
                             <td><?php echo $desc; ?></td>
@@ -465,11 +448,7 @@ if (isset($_POST['btnDelete'])) {
 
                                 if ($key3 == $name) {
                                     echo '<tr>
-                                         <td>
-                                            <div>
-                                                <input type="checkbox" id="checkboxNoLabel" value="" >
-                                            </div>
-                                        </td>
+                                        
                                         <td>' . $key3 . '</td>
                                          <td>' . $category . '</td>
                                         <td>' . $desc . '</td>
