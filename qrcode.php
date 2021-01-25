@@ -31,21 +31,25 @@ if (isset($_POST['newProductBtn'])) {
     if(empty($_POST['category'])){
         echo alertError("<b>Please select a category first</b>");
     }else{
-        $child = $_POST['category'];
-        try {
-            $data = [
-                "category" => $child,
-                "product_name" => $_POST['newProduct'],
-                "desc" => $_POST['prodDesc'],
-                "qty" => $_POST['qty'],
-                "image" => $_FILES['image']['name'],
-                "price" => $_POST['price']
-            ];
+        if(!checkString($_POST['newProduct'])){
+            echo alertError($_POST['newProduct'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+        }else{
+            $child = $_POST['category'];
+            try {
+                $data = [
+                    "category" => $child,
+                    "product_name" => $_POST['newProduct'],
+                    "desc" => $_POST['prodDesc'],
+                    "qty" => $_POST['qty'],
+                    "image" => $_FILES['image']['name'],
+                    "price" => $_POST['price']
+                ];
 
-            $fb->database->getReference("Products")->push($data);
-            echo alertSuccess('<b>' . $_POST['newProduct'] . '</b> has been added successfully</div>');
-        } catch (Exception $e) {
-            echo alertError($e);
+                $fb->database->getReference("Products")->push($data);
+                echo alertSuccess('<b>' . $_POST['newProduct'] . '</b> has been added successfully</div>');
+            } catch (Exception $e) {
+                echo alertError($e);
+            }
         }
     }
 }
@@ -94,6 +98,23 @@ function getCatList($fb)
     }
 }
 
+function checkString($string){
+    $stat = true;
+    if (strpos($string, '/') !==false){
+        $stat = false;
+    }elseif (strpos($string, '.') !==false){
+        $stat = false;
+    }elseif (strpos($string, '#') !==false){
+        $stat = false;
+    }elseif (strpos($string, '$') !==false){
+        $stat = false;
+    }elseif (strpos($string, '[') !==false){
+        $stat = false;
+    }elseif (strpos($string, ']') !==false){
+        $stat = false;
+    }
+    return $stat;
+}
 ?>
 
 <!-- Page Wrapper -->
@@ -299,6 +320,7 @@ function getCatList($fb)
                                 <div class="form-row">
                                     <input type="text" name="newProduct" id="newProduct" class="form-control"
                                            placeholder="Product Name" required/>
+                                    <span class="small text-muted">Do not enter these symbols <b>/ . # $ [ ]</b></span>
                                 </div>
                             </div>
                             <div class="form-group mb-3">

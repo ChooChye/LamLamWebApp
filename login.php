@@ -47,7 +47,7 @@
                                 </div>
                                 <form action="" method="post" class="user">
                                     <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" id="llEmail" aria-describedby="emailHelp" placeholder="Email Address...">
+                                        <input autocomplete="off" type="email" class="form-control form-control-user" id="llEmail" aria-describedby="emailHelp" placeholder="Email Address...">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user" id="llPassword" placeholder="Password">
@@ -163,10 +163,6 @@
 
         return false;
     }
-
-
-
-
 </script>
 </body>
 
