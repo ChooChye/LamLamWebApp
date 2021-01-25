@@ -40,15 +40,7 @@ if (isset($_POST['btnDelete'])) {
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarText">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="navbar-text" aria-current="page" href="#">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox_all"
-                                           value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox_all">All</label>
-                                </div>
-                            </a>
-                        </li>
+
                         <li class="nav-item">
 
                             <button id="btnAdd" onclick="location.href='insertNewData.php'" class="btn">
@@ -102,16 +94,6 @@ if (isset($_POST['btnDelete'])) {
             <th>Price</th>
             <th>Quantity</th>
             <th>Status
-                <!--
-                <div class="input-group" >
-                    <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" style="border-color: transparent">
-                        <option selected>Status</option>
-                        <option value="1">In Stock</option>
-                        <option value="2">Out of Stock</option>
-                        <option value="3">Loan</option>
-                    </select>
-                </div>
-                -->
             </th>
             <th>Staff ID</th>
             <th>Retailer ID</th>
@@ -384,11 +366,7 @@ if (isset($_POST['btnDelete'])) {
 
                         <tr id="currentData" class="visible">
 
-                            <td>
-                                <div>
-                                    <input type="checkbox" id="checkboxNoLabel" value="">
-                                </div>
-                            </td>
+
                             <td><?php echo $pname; ?></td>
                             <td><?php echo $category; ?></td>
                             <td><?php echo $desc; ?></td>
@@ -472,7 +450,7 @@ if (isset($_POST['btnDelete'])) {
                                                     <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
                             
                                                       <!--  <a href="viewproject.php?pid=\'.$row[\'pid\'].\'">-->
-                                                            <a href="editData.php?token='.$key3.'">
+                                                            <a href="editData.php?token='.$key.'">
                                                             <img src="edit.svg" width="20" height="20">
                                                         </a>
                                                     </button>

@@ -143,8 +143,8 @@ function getCatList($fb)
                 if (stripos($name, $kword)  !== false) {
                     $category = $row['category'];
                     $qty = $row['qty'];
-
-                    echo '<tr>
+if ($qty>0){
+    echo '<tr>
                     <td>'.$nameForGUI.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -154,6 +154,19 @@ function getCatList($fb)
                     <td></td>
                     <td></td>
                     </tr>';
+}elseif ($qty==0){
+    echo '<tr>
+                    <td>'.$nameForGUI.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$qty.'</td>
+                    <td>Out of Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+}
+
 
                     foreach ($fetchdata1 as $key1 ){
 
@@ -262,8 +275,8 @@ function getCatList($fb)
                     $category = $row['category'];
                     $qty = $row['qty'];
                     $name1 = $row['product_name'];
-
-                    echo '<tr>
+if ($qty>0){
+    echo '<tr>
                     <td>'.$name1.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -273,6 +286,8 @@ function getCatList($fb)
                     <td></td>
                     <td></td>
                     </tr>';
+}
+
                 }elseif ($kwordsStatus==="OUT OF STOCK"){
                     $category = $row['category'];
                     $qty = $row['qty'];
@@ -336,90 +351,7 @@ function getCatList($fb)
                         }
                     }
 
-           /*         if ($kwordsStatus==="LOAN") {
-                        $category = $row['category'];
-                        $qty = $row['qty'];
-                        $name1 = $row['product_name'];
 
-                        echo '<tr>
-                    <td>'.$name1.'</td>
-                    <td>'.$category.'</td>
-                    <td>'.$qty.'</td>
-                     <td>Loans '.$status.'</td>
-                    <td>'.$staffID.'</td>
-                    <td>'.$retailerID.'</td>
-                    <td>'.$loanID.'</td>
-                    <td>'.$loanDate.'</td>
-                    </tr>';
-                    }*/
-
-                /*    if ($kwordsStatus==="LOAN"||$kwordRID==$retailerID||$kwordLID==$loanID) {
-                        $category = $row['category'];
-                        $qty = $row['qty'];
-                        $name1 = $row['product_name'];
-
-                        echo '<tr>
-                    <td>'.$name1.'</td>
-                    <td>'.$category.'</td>
-                    <td>'.$qty.'</td>
-                     <td>Loans '.$status.'</td>
-                    <td>'.$staffID.'</td>
-                    <td>'.$retailerID.'</td>
-                    <td>'.$loanID.'</td>
-                    <td>'.$loanDate.'</td>
-                    </tr>';
-
-
-                    }*/
-
-
-           /*         if ($kwordLID==$loanID) {
-                        $category = $row['category'];
-                        $qty = $row['qty'];
-                        $name1 = $row['product_name'];
-
-                        echo '<tr>
-                    <td>'.$name1.'</td>
-                    <td>'.$category.'</td>
-                    <td>'.$qty.'</td>
-                     <td>Loans '.$status.'</td>
-                    <td>'.$staffID.'</td>
-                    <td>'.$retailerID.'</td>
-                    <td>'.$loanID.'</td>
-                    <td>'.$loanDate.'</td>
-                    </tr>';
-                    }*/
-
-                  /*  foreach ($test as $key3 => $row3)
-                    {
-                        if ($kwordSID==$staffID) {
-                            $category = $row['category'];
-                            $qty = $row['qty'];
-                            $name1 = $row['product_name'];
-
-
-
-                            foreach ($fetchdata as $key => $row) {
-                                $category = $row['category'];
-                                $name = $row['product_name'];
-
-                                if ($key3==$name){
-                                    echo '<tr>
-                                        <td>'.$key3.'</td>
-                                        <td>'.$category.'</td>
-                                        <td>'.$row3.'</td>
-                                         <td>Loans '.$status.'</td>
-                                        <td>'.$staffID.'</td>
-                                        <td>'.$retailerID.'</td>
-                                        <td>'.$loanID.'</td>
-                                        <td>'.$loanDate.'</td>
-                                        </tr>';
-                                }
-
-
-                            }
-                        }
-                    }*/
                 }
             }
         }
