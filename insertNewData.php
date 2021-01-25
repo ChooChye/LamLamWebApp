@@ -36,11 +36,38 @@ if (isset($_POST['save_push_data'])) {
             "price" => $_POST['price']
         ];
 
-        $fb->database->getReference("Products/")->push($data);
-        echo alertSuccess(' Data has been added successfully');
+
+        if(!checkString($_POST['product_name'])){
+            echo alertError($_POST['product_name'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+        }else{
+            //success
+            //    echo alertSuccess(' Data has been added successfully');
+            $fb->database->getReference("Products/")->push($data);
+            echo alertSuccess('<b>' . $_POST['product_name'] . '</b> has been added successfully</div>');
+        }
+
     } catch (Exception $e) {
         echo alertError($e);
     }
+}
+
+
+function checkString($string){
+    $stat = true;
+    if (strpos($string, '/') !==false){
+        $stat = false;
+    }elseif (strpos($string, '.') !==false){
+        $stat = false;
+    }elseif (strpos($string, '#') !==false){
+        $stat = false;
+    }elseif (strpos($string, '$') !==false){
+        $stat = false;
+    }elseif (strpos($string, '[') !==false){
+        $stat = false;
+    }elseif (strpos($string, ']') !==false){
+        $stat = false;
+    }
+    return $stat;
 }
 ?>
 

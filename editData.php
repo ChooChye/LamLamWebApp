@@ -32,7 +32,7 @@ if (isset($_POST['update'])) {
             "category" => $child,
             "product_name" => $_POST['product_name'],
             "desc" => $_POST['desc'],
-            "image" => "no_image.png",
+
             "qty" => $_POST['qty'],
             "price" => $_POST['price']
         ];
@@ -42,7 +42,8 @@ if (isset($_POST['update'])) {
 
       $fb->database->getReference($ref)->update($data);
 
-        echo alertSuccess(' Data has been updated successfully');
+       // echo alertSuccess(' Data has been updated successfully');
+        echo alertSuccess('<b>' . $_POST['product_name'] . '</b> has been updated successfully</div>');
     } catch (Exception $e) {
         echo alertError($e);
     }
