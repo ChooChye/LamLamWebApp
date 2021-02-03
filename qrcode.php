@@ -175,7 +175,7 @@ function checkString($string){
                                 <?php
                                 if (isset($_POST['genBtn'])) {
                                     echo '    <center>
-                                                <img src="' . $file . '"/><br/>
+                                                <img class="img-fluid" src="' . $file . '"/><br/>
                                                 <a href="#" class="btn btn-primary"><i class="fas fa-print"></i> Print</a>
                                               </center>';
                                 } else {

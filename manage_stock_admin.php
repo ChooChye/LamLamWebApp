@@ -473,17 +473,13 @@ if (isset($_POST['btnDelete'])) {
                 <?php
             }
         }
-
-
         ?>
-
         </tbody>
     </table>
 </div>
 
 <?php
 include('includes/footer.php');
-
 ?>
 
 
