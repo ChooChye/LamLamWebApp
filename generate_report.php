@@ -213,8 +213,8 @@ if ($qty>0){
                     $category = $row['category'];
                     $qty = $row['qty'];
                     $name1 = $row['product_name'];
-
-                    echo '<tr>
+if ($qty>0){
+    echo '<tr>
                     <td>'.$name1.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -224,6 +224,19 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
+}elseif ($qty==0){
+    echo '<tr>
+                    <td>'.$name1.'</td>
+                    <td>'.$category.'</td>
+                    <td>'.$qty.'</td>
+                    <td>Out of Stocks</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    </tr>';
+}
+
 
                     foreach ($fetchdata1 as $key1 ){
 

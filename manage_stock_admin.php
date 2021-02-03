@@ -279,50 +279,17 @@ if (isset($_POST['btnDelete'])) {
         }else{
             if ($fetchdata > 0) {
 
+
                 foreach ($fetchdata as $key => $row) {
+
                     $pname = $row['product_name'];
                     $category = $row['category'];
                     $desc = $row['desc'];
                     $price = $row['price'];
                     $qty = $row['qty'];
 
+
                     if ($qty > 0) {
-
-
-                        /*  echo '<tr>
-                                    <td>
-                                     <div>
-                                        <input type="checkbox" id="checkboxNoLabel" value="" >
-                                      </div>
-                                     </td>
-                                     <td>'.$pname.'</td>
-                                     <td>'.$category.'</td>
-                                     <td>'.$desc.'</td>
-                                     <td>'.$price.'</td>
-                                     <td>'.$qty.'</td>
-                                     <td>In Stock</td>
-                                     <td></td>
-                                     <td></td>
-                                     <td></td>
-                                     <td></td>
-                                                       <td>
-                                                           <form action="" method="post">
-                                                               <div class="form-group">
-                                                                  <input type="hidden" name="ref_token_delete" value="<?php echo $key?>">
-                                                                   <button type="submit" class="close" name="btnDelete" >
-                                                                       <img src="delete.svg" width="20" height="20">
-
-                                                                   </button>
-
-                                                                   <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
-                                                                           <a href="editData.php?token=<?php echo $key?>">
-                                                                           <img src="edit.svg" width="20" height="20">
-                                                                       </a>
-                                                                   </button>
-                                                               </div>
-                                                           </form>
-                                                       </td>
-                                                       </tr>';*/
 
                         ?>
                         <tr id="currentData" class="visible">
@@ -450,7 +417,7 @@ if (isset($_POST['btnDelete'])) {
                                                     <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
                             
                                                       <!--  <a href="viewproject.php?pid=\'.$row[\'pid\'].\'">-->
-                                                            <a href="editData.php?token='.$key.'">
+                                                            <a href="editData.php?name='.$key3.'">
                                                             <img src="edit.svg" width="20" height="20">
                                                         </a>
                                                     </button>
@@ -487,42 +454,4 @@ include('includes/footer.php');
 ?>
 
 
-<?php
-/*
-    class crud {
-        protected $database;
-        protected $dbname = 'users';
-        public function __construct(){
-            $acc = ServiceAccount::fromJsonFile(__DIR__ . '/secret/php-firebase-7f39e-c654ccd32aba.json');
-            $firebase = (new Factory)->withServiceAccount($acc)->create();
-            $this->database = $firebase->getDatabase();
-        }
-        public function get(int $userID = NULL){
-            if (empty($userID) || !isset($userID)) { return FALSE; }
-            if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)){
-                return $this->database->getReference($this->dbname)->getChild($userID)->getValue();
-            } else {
-                return FALSE;
-            }
-        }
-        public function insert(array $data) {
-            if (empty($data) || !isset($data)) { return FALSE; }
-            foreach ($data as $key => $value){
-                $this->database->getReference()->getChild($this->dbname)->getChild($key)->set($value);
-            }
-            return TRUE;
-        }
-        public function delete(int $userID) {
-            if (empty($userID) || !isset($userID)) { return FALSE; }
-            if ($this->database->getReference($this->dbname)->getSnapshot()->hasChild($userID)){
-                $this->database->getReference($this->dbname)->getChild($userID)->remove();
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        }
-
-    }
-*/
-?>
 
