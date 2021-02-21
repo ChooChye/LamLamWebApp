@@ -7,6 +7,9 @@ $header->initHeader();
 $fb = new FBconnect('includes/');
 $ref = "Categories";
 
+$prodRef = "Products/";
+$fetchdata = $fb->database->getReference($prodRef)->getValue();
+
 
 function getCatList($fb)
 {
@@ -23,27 +26,59 @@ function getCatList($fb)
     }
 }
 
+
 //Add new product
 if (isset($_POST['save_push_data'])) {
     $child = $_POST['category'];
+
+
+
     try {
         $data = [
             "category" => $child,
-            "product_name" => $_POST['product_name'],
+            "product_name" => $_POST['productName'],
             "desc" => $_POST['desc'],
             "image" => "no_image.png",
             "qty" => $_POST['qty'],
             "price" => $_POST['price']
         ];
 
+      /*  if  (isset($_POST['productName'])) {
+            $kword = strtoupper($_POST['productName']);
+            foreach ($fetchdata as $key => $row) {
+                $pname = strtoupper($row['product_name']);
+                $testingName = $row['product_name'];
+                if ($kword == $pname) {
+                    echo alertError($_POST['productName'] . " <b> IS EXISTED</b>");
+                }
+            }
+        }*/
 
-        if(!checkString($_POST['product_name'])){
-            echo alertError($_POST['product_name'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+       /* if(!checkString($_POST['productName'])){
+            echo alertError($_POST['productName'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+
+        }*/
+    if  (isset($_POST['productName'])){
+            $kword = strtoupper($_POST['productName']);
+            foreach ($fetchdata as $key => $row) {
+                $pname = strtoupper($row['product_name']);
+                $testingName=$row['product_name'];
+                if ($kword==$pname) {
+                    echo alertError($_POST['productName'] . " <b> IS EXISTED</b>");
+                }
+
+
+            }
+
+        if(!checkString($_POST['productName'])){
+            echo alertError($_POST['productName'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+
+        }
         }else{
             //success
-            //    echo alertSuccess(' Data has been added successfully');
-            $fb->database->getReference("Products/")->push($data);
-            echo alertSuccess('<b>' . $_POST['product_name'] . '</b> has been added successfully</div>');
+            echo alertSuccess(' SUCCESS TESTING');
+          //  $fb->database->getReference("Products/")->push($data);
+           // echo alertSuccess('<b>' . $_POST['productName'] . '</b> has been added successfully</div>');
         }
 
     } catch (Exception $e) {
@@ -89,9 +124,10 @@ function checkString($string){
 
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" >
                     <label>Product Name:</label>
-                    <input type="text " name="product_name" class="form-control" required>
+                    <input type="text "  name="productName" class="form-control"  required>
+
                 </div>
 
                 <div class="form-group">
@@ -109,8 +145,8 @@ function checkString($string){
                     <input type="number " name="qty" class="form-control" required>
                 </div>
 
-                <div class="form-group">
-                    <button type="submit" name="save_push_data" class="btn btn-primary">Add Data</button>
+                <div class="form-group" >
+                    <button type="submit"  name="save_push_data" class="btn btn-primary">Add Data</button>
                     <button type="button" class="btn " onclick="location.href='manage_stock_admin.php'">Cancel</button>
                 </div>
              </form>
@@ -118,3 +154,4 @@ function checkString($string){
     </div>
 
 </div>
+

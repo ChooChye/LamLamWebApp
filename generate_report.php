@@ -85,7 +85,7 @@ function getCatList($fb)
 
         </div>
 
-      <!--   <div class="col-12 row g-3 mt-3">
+         <div class="col-12 row g-3 mt-3">
 
                     <div class="col">
                         <label for="inputZip" class="form-label">Start Date</label>
@@ -95,7 +95,7 @@ function getCatList($fb)
                         <label for="inputZip" class="form-label">End Date</label>
                         <input class="form-control" data-date-format="mm/dd/yyyy" type="date" name="EndDate">
                     </div>
-                </div>-->
+                </div>
 
         <div class="col-12 mt-4" >
             <button type="submit" class="btn btn-primary">Search</button>
@@ -129,6 +129,7 @@ function getCatList($fb)
         $loadRef = "Loans/";
         $fetchdata1=$firebase->database->getReference($loadRef)->getValue();
 
+        //GENERATE PRODUCT NAME RESULT
         if (isset($_GET['inputName'])){
             $kword = strtoupper($_GET['inputName']);
 
@@ -139,12 +140,11 @@ function getCatList($fb)
                 $testing = strtoupper($row['category']);
                 $testingForGUI = strtoupper($row['category']);
 
-
                 if (stripos($name, $kword)  !== false) {
                     $category = $row['category'];
                     $qty = $row['qty'];
-if ($qty>0){
-    echo '<tr>
+                if ($qty>0){
+                    echo '<tr>
                     <td>'.$nameForGUI.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -154,8 +154,8 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
-}elseif ($qty==0){
-    echo '<tr>
+                }elseif ($qty==0){
+                    echo '<tr>
                     <td>'.$nameForGUI.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -165,7 +165,7 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
-}
+                }
 
 
                     foreach ($fetchdata1 as $key1 ){
@@ -192,7 +192,6 @@ if ($qty>0){
                     <td>'.$loanDate.'</td>
                     </tr>';
 
-
                                 }
                             }
 
@@ -202,6 +201,7 @@ if ($qty>0){
             }
         }
 
+        //GENERATE CATEGORY RESULT
         if (isset($_GET['selectionCat'])){
             $kword1 = strtoupper($_GET['selectionCat']);
 
@@ -213,8 +213,8 @@ if ($qty>0){
                     $category = $row['category'];
                     $qty = $row['qty'];
                     $name1 = $row['product_name'];
-if ($qty>0){
-    echo '<tr>
+                if ($qty>0){
+                    echo '<tr>
                     <td>'.$name1.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -224,8 +224,8 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
-}elseif ($qty==0){
-    echo '<tr>
+                }elseif ($qty==0){
+                    echo '<tr>
                     <td>'.$name1.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -235,7 +235,7 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
-}
+                }
 
 
                     foreach ($fetchdata1 as $key1 ){
@@ -262,7 +262,6 @@ if ($qty>0){
                     <td>'.$loanDate.'</td>
                     </tr>';
 
-
                                 }
                             }
 
@@ -272,8 +271,7 @@ if ($qty>0){
             }
         }
 
-
-
+        //GENERATE STATUS RESULT
         if (isset($_GET['selectStatus'])){
             $kwordsStatus = strtoupper($_GET['selectStatus']);
             $kwordRID = $_GET['inputRID'];
@@ -288,8 +286,8 @@ if ($qty>0){
                     $category = $row['category'];
                     $qty = $row['qty'];
                     $name1 = $row['product_name'];
-if ($qty>0){
-    echo '<tr>
+                if ($qty>0){
+                    echo '<tr>
                     <td>'.$name1.'</td>
                     <td>'.$category.'</td>
                     <td>'.$qty.'</td>
@@ -299,7 +297,7 @@ if ($qty>0){
                     <td></td>
                     <td></td>
                     </tr>';
-}
+                }
 
                 }elseif ($kwordsStatus==="OUT OF STOCK"){
                     $category = $row['category'];
@@ -323,7 +321,9 @@ if ($qty>0){
                 }
             }
 
+            //GENERATE LOAN STATUS, LID, RID, SID RESULT
             foreach ($fetchdata1 as $key1 ){
+        
 
                 foreach ($key1 as $key2=>$row2){
                     $status=  $row2['status'];
@@ -332,11 +332,6 @@ if ($qty>0){
                     $loanID=  $row2['loanID'];
                     $loanDate=  $row2['loanDate'];
                     $test= $row2['productName'];
-
-
-                    $upperRID= strtoupper( $row2['retailerID']);
-                    $upperSID= strtoupper( $row2['staffID']);
-                    $upperLID=  strtoupper($row2['loanID']);
 
                     foreach ($test as $key3 => $row3)
                     {
@@ -367,8 +362,54 @@ if ($qty>0){
 
                 }
             }
+
+
         }
 
+        if (isset($_GET['startDate'])){
+            //GENERATE DATE RESULT
+            foreach ($fetchdata1 as $key1 ){
+
+
+                foreach ($key1 as $key2=>$row2){
+                    $status=  $row2['status'];
+                    $retailerID=  $row2['retailerID'];
+                    $staffID=  $row2['staffID'];
+                    $loanID=  $row2['loanID'];
+                    $loanDate=  $row2['loanDate'];
+                    $test= $row2['productName'];
+                    $kwordSDate = $_GET['startDate'];
+
+                    foreach ($test as $key3 => $row3)
+                    {
+                        if ($kwordSDate==$loanDate) {
+
+                            foreach ($fetchdata as $key => $row) {
+                                $category = $row['category'];
+                                $name = $row['product_name'];
+
+                                if ($key3==$name){
+                                    echo '<tr>
+                                        <td>'.$key3.'</td>
+                                        <td>'.$category.'</td>
+                                        <td>'.$row3.'</td>
+                                         <td>Loans '.$status.'</td>
+                                        <td>'.$staffID.'</td>
+                                        <td>'.$retailerID.'</td>
+                                        <td>'.$loanID.'</td>
+                                        <td>'.$loanDate.'</td>
+                                        </tr>';
+                                }
+
+
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
 
 
             ?>

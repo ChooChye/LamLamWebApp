@@ -119,6 +119,7 @@ if (isset($_POST['btnDelete'])) {
         if (isset($_GET['search'])) {
             $kword = strtoupper($_GET['search']);
 
+            //PRINT DATA AFTER SEARCH
             foreach ($fetchdata as $key => $row) {
 
                 $name = strtoupper($row['product_name']);
@@ -129,7 +130,7 @@ if (isset($_POST['btnDelete'])) {
                 $qty = $row['qty'];
 
                 if (stripos($name, $kword) !== false) {
-                    if ($qty > 0) {
+
 
                         ?>
 
@@ -140,7 +141,13 @@ if (isset($_POST['btnDelete'])) {
                             <td><?php echo $desc; ?></td>
                             <td><?php echo $price; ?></td>
                             <td><?php echo $qty; ?></td>
-                            <td><?php echo "In Stocks" ?></td>
+                            <td><?php
+                            if ($qty > 0) {
+                                echo "In Stocks" ;
+                            } elseif ($qty == 0) {
+                                echo "Out of Stocks";
+                             }
+                                ?></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -166,49 +173,10 @@ if (isset($_POST['btnDelete'])) {
 
                         </tr>
 
+
+
+
                         <?php
-                    } elseif ($qty == 0) {
-
-                        ?>
-
-                        <tr id="currentData" class="visible">
-
-                            <td><?php echo $nameForGUI; ?></td>
-                            <td><?php echo $category; ?></td>
-                            <td><?php echo $desc; ?></td>
-                            <td><?php echo $price; ?></td>
-                            <td><?php echo $qty; ?></td>
-                            <td><?php echo "Out of Stocks" ?></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <form action="" method="post">
-                                    <div class="form-group">
-                                        <input type="hidden" name="ref_token_delete" value="<?php echo $key ?>">
-                                        <button type="submit" class="close" name="btnDelete">
-                                            <img src="delete.svg" width="20" height="20">
-
-                                        </button>
-
-                                        <button type="button" class="close" name="btnEdit"
-                                                onclick="location.href='editData.php'">
-                                            <a href="editData.php?token=<?php echo $key ?>">
-                                                <img src="edit.svg" width="20" height="20">
-                                            </a>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-
-                        </tr>
-                        <?php
-
-
-                    }
-
-
                 }
             }
 
@@ -277,8 +245,9 @@ if (isset($_POST['btnDelete'])) {
             }
 
         }else{
-            if ($fetchdata > 0) {
 
+            //PRINT DATA DIRECTLY
+            if ($fetchdata > 0) {
 
                 foreach ($fetchdata as $key => $row) {
 
@@ -289,9 +258,8 @@ if (isset($_POST['btnDelete'])) {
                     $qty = $row['qty'];
 
 
-                    if ($qty > 0) {
 
-                        ?>
+                    ?>
                         <tr id="currentData" class="visible">
 
                             <td><?php echo $pname; ?></td>
@@ -299,7 +267,13 @@ if (isset($_POST['btnDelete'])) {
                             <td><?php echo $desc; ?></td>
                             <td><?php echo $price; ?></td>
                             <td><?php echo $qty; ?></td>
-                            <td><?php echo "In Stocks" ?></td>
+                            <td><?php
+                        if ($qty > 0) {
+                                echo "In Stocks";
+                        } elseif ($qty == 0) {
+                            echo "Out of Stocks";
+                        }
+                            ?></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -322,54 +296,9 @@ if (isset($_POST['btnDelete'])) {
                                     </div>
                                 </form>
                             </td>
-
                         </tr>
 
                         <?php
-                    } elseif ($qty == 0) {
-
-
-                        ?>
-
-                        <tr id="currentData" class="visible">
-
-
-                            <td><?php echo $pname; ?></td>
-                            <td><?php echo $category; ?></td>
-                            <td><?php echo $desc; ?></td>
-                            <td><?php echo $price; ?></td>
-                            <td><?php echo $qty; ?></td>
-                            <td><?php echo "Out of Stocks" ?></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>
-                                <form action="" method="post">
-                                    <div class="form-group">
-                                        <input type="hidden" name="ref_token_delete" value="<?php echo $key ?>">
-                                        <button type="submit" class="close" name="btnDelete">
-                                            <img src="delete.svg" width="20" height="20">
-
-                                        </button>
-
-                                        <button type="button" class="close" name="btnEdit"
-                                                onclick="location.href='editData.php'">
-                                            <a href="editData.php?token=<?php echo $key ?>">
-                                                <img src="edit.svg" width="20" height="20">
-                                            </a>
-                                        </button>
-                                    </div>
-                                </form>
-                            </td>
-
-                        </tr>
-
-
-                        <?php
-
-                    }
-
                 }
 
                 foreach ($fetchdata1 as $key1) {
