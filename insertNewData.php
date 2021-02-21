@@ -43,43 +43,31 @@ if (isset($_POST['save_push_data'])) {
             "price" => $_POST['price']
         ];
 
-      /*  if  (isset($_POST['productName'])) {
-            $kword = strtoupper($_POST['productName']);
-            foreach ($fetchdata as $key => $row) {
-                $pname = strtoupper($row['product_name']);
-                $testingName = $row['product_name'];
-                if ($kword == $pname) {
-                    echo alertError($_POST['productName'] . " <b> IS EXISTED</b>");
-                }
-            }
-        }*/
-
-       /* if(!checkString($_POST['productName'])){
-            echo alertError($_POST['productName'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
-
-        }*/
-    if  (isset($_POST['productName'])){
+            $testingData="testing123";
             $kword = strtoupper($_POST['productName']);
             foreach ($fetchdata as $key => $row) {
                 $pname = strtoupper($row['product_name']);
                 $testingName=$row['product_name'];
+
                 if ($kword==$pname) {
-                    echo alertError($_POST['productName'] . " <b> IS EXISTED</b>");
+                    $testingData=$pname;
                 }
-
-
             }
 
-        if(!checkString($_POST['productName'])){
-            echo alertError($_POST['productName'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
+            if(!checkString($_POST['productName'])){
+                echo alertError($_POST['productName'] . " must not contain these symbols <b>/ . # $ [ ]</b>");
 
-        }
-        }else{
-            //success
-            echo alertSuccess(' SUCCESS TESTING');
-          //  $fb->database->getReference("Products/")->push($data);
-           // echo alertSuccess('<b>' . $_POST['productName'] . '</b> has been added successfully</div>');
-        }
+            }elseif ($kword==$testingData){
+                echo alertError($_POST['productName'] . " <b> IS EXISTED</b>");
+            }
+
+            else{
+             //   echo alertSuccess(' SUCCESS TESTING');
+                  $fb->database->getReference("Products/")->push($data);
+                 echo alertSuccess('<b>' . $_POST['productName'] . '</b> has been added successfully</div>');
+            }
+
+
 
     } catch (Exception $e) {
         echo alertError($e);
@@ -149,6 +137,7 @@ function checkString($string){
                     <button type="submit"  name="save_push_data" class="btn btn-primary">Add Data</button>
                     <button type="button" class="btn " onclick="location.href='manage_stock_admin.php'">Cancel</button>
                 </div>
+
              </form>
         </div>
     </div>
