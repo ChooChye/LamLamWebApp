@@ -5,18 +5,9 @@ $header = new Header('', 'Manage Stock (Admin)');
 $header->initHeader();
 
 $fb = new FBconnect('includes/');
-//$ref = "Categories";
+
 $token = $_GET['token'];
 $getdata=$fb->database->getReference('Products')->getChild($token)->getValue();
-
-//LOAN FIREBASE
-/*$date = $_GET['token'];
-$time=$_GET['time'];
-$name=$_GET['productName'];
-
-$loanref="Loans/".$date.$time;
-$getdata1=$fb->database->getReference($loanref)->getValue();*/
-
 
 function getCatList($fb)
 {
@@ -52,16 +43,10 @@ if (isset($_POST['update'])) {
 
         ];
 
-
         $ref="Products/".$token;
 
       $fb->database->getReference($ref)->update($data);
 
-      //Loan Firebase
-      //  $loanref="Loans/".$date.$time.$name;
-      //  $fb->database->getReference($loanref)->update($data1);
-
-        
         echo alertSuccess('<b>' . $_POST['product_name'] . '</b> has been updated successfully</div>');
     } catch (Exception $e) {
         echo alertError($e);
@@ -79,7 +64,7 @@ if (isset($_POST['update'])) {
         <div class="col-md-6 mt-4">
             <h4>Update Stocks Data</h4><hr>
             <form action="" method="post">
-<!--                <input type="hidden" name="token" value="--><?php //echo $token?><!--">-->
+
                 <div class="form-group">
                     <label>Category:</label><br>
                     <select name="category" class="form-control" >
@@ -96,7 +81,6 @@ if (isset($_POST['update'])) {
                     <input type="text " name="product_name" class="form-control"
                            value="<?php
                                     echo $getdata['product_name'];
-
 
                                    ?>">
                 </div>

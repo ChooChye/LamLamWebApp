@@ -22,10 +22,7 @@ if (isset($_POST['btnDelete'])) {
     }
 }
 
-
 ?>
-
-
 
 <?php include('includes/navbar.php') ?>
 <div class="container">
@@ -47,7 +44,6 @@ if (isset($_POST['btnDelete'])) {
                                 <img src="add.svg" alt="" width="30" height="20" class="d-inline-block align-top">
                                 Add
                             </button>
-
 
                         </li>
 
@@ -87,7 +83,6 @@ if (isset($_POST['btnDelete'])) {
         <thead>
         <tr>
 
-
             <th>Product Name</th>
             <th>Category</th>
             <th>Description</th>
@@ -105,9 +100,7 @@ if (isset($_POST['btnDelete'])) {
         </thead>
         <tbody>
 
-        <!--PRINT DATA IN PRODUCTS DATABASE-->
         <?php
-
 
         $firebase = new FBconnect('includes/');
         $prodRef = "Products/";
@@ -130,7 +123,6 @@ if (isset($_POST['btnDelete'])) {
                 $qty = $row['qty'];
 
                 if (stripos($name, $kword) !== false) {
-
 
                         ?>
 
@@ -170,10 +162,7 @@ if (isset($_POST['btnDelete'])) {
                                     </div>
                                 </form>
                             </td>
-
                         </tr>
-
-
 
 
                         <?php
@@ -224,8 +213,7 @@ if (isset($_POST['btnDelete'])) {
                                                     </button>
                             
                                                     <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
-                            
-                                                      <!--  <a href="viewproject.php?pid=\'.$row[\'pid\'].\'">-->
+                                                               
                                                             <a href='.$key3.'>
                                                             <img src="edit.svg" width="20" height="20">
                                                         </a>
@@ -256,8 +244,6 @@ if (isset($_POST['btnDelete'])) {
                     $desc = $row['desc'];
                     $price = $row['price'];
                     $qty = $row['qty'];
-
-
 
                     ?>
                         <tr id="currentData" class="visible">
@@ -344,8 +330,7 @@ if (isset($_POST['btnDelete'])) {
                                                     </button>
                             
                                                     <button type="button" class="close" name="btnEdit" onclick="location.href=\'editData.php\'" >
-                            
-                                                      <!--  <a href="viewproject.php?pid=\'.$row[\'pid\'].\'">-->
+                                                                                
                                                             <a href="editData.php?name='.$key3.'">
                                                             <img src="edit.svg" width="20" height="20">
                                                         </a>

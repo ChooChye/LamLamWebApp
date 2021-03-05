@@ -85,18 +85,6 @@ function getCatList($fb)
 
         </div>
 
-         <div class="col-12 row g-3 mt-3">
-
-                    <div class="col">
-                        <label for="inputZip" class="form-label">Start Date</label>
-                        <input class="form-control" data-date-format="mm/dd/yyyy" type="date" name="startDate">
-                    </div>
-                    <div class="col">
-                        <label for="inputZip" class="form-label">End Date</label>
-                        <input class="form-control" data-date-format="mm/dd/yyyy" type="date" name="EndDate">
-                    </div>
-                </div>
-
         <div class="col-12 mt-4" >
             <button type="submit" class="btn btn-primary">Search</button>
             <a href="generate_report.php" class="btn" style="border-color: black">Reset</a>
@@ -323,7 +311,6 @@ function getCatList($fb)
 
             //GENERATE LOAN STATUS, LID, RID, SID RESULT
             foreach ($fetchdata1 as $key1 ){
-        
 
                 foreach ($key1 as $key2=>$row2){
                     $status=  $row2['status'];
@@ -401,23 +388,17 @@ function getCatList($fb)
                                         </tr>';
                                 }
 
-
                             }
                         }
                     }
-
 
                 }
             }
         }
 
-
             ?>
     </table>
 </div>
-
-
-
 
 <?php
 include('includes/footer.php');
