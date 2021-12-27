@@ -7,13 +7,10 @@ Lamlam is an Inventory Management System, a software system using QR code to kee
 This github is for the web application. Please visit the mobile application repo -> <a href="https://github.com/ChooChye/LamLamAndroidApp">LamLam Mobile App Repo</a>
 
 # Screenshots
-<table>
-  <tr>
-    <td><img src="https://user-images.githubusercontent.com/37932895/147467494-a039023d-eed3-461a-9497-4f3deb7d7ca6.png" width="200"></td>
-    <td><img src="https://user-images.githubusercontent.com/37932895/147467491-7502aed6-30b6-46ea-a3f6-0d9f8b283bc5.png" width="200"></td>
-    <td><img src="https://user-images.githubusercontent.com/37932895/147465411-690fc02d-dbed-475d-a015-3a1d306c0f29.jpg" width="200"></td>
-  </tr>
- </table>
+
+<img src="https://user-images.githubusercontent.com/37932895/147467491-7502aed6-30b6-46ea-a3f6-0d9f8b283bc5.png" width="500">
+<img src="https://user-images.githubusercontent.com/37932895/147467494-a039023d-eed3-461a-9497-4f3deb7d7ca6.png" width="500">
+<img src="https://user-images.githubusercontent.com/37932895/147467660-d5ff5130-b909-4eab-8d9e-be958a28ff02.png" width="500">
  
 
 # The Team
